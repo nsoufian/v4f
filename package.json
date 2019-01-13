@@ -1,7 +1,7 @@
 {
-	"name": "v4f-test",
-	"version": "0.0.1-rc1",
-	"description": "Simple validator for browser from",
+	"name": "v4f",
+	"version": "0.0.1",
+	"description": "Light and Simple data & types validator for browser from",
 	"main": "lib/index",
 	"typings": "lib/index.d.ts",
 	"author": "Nassih soufiane",
