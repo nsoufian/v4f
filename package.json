@@ -1,17 +1,15 @@
 {
-	"name": "validator",
-	"version": "0.0.1",
+	"name": "v4f-test",
+	"version": "0.0.1-rc1",
 	"description": "Simple validator for browser from",
-	"main": "src/index",
+	"main": "lib/index",
+	"typings": "lib/index.d.ts",
 	"author": "Nassih soufiane",
 	"license": "MIT",
 	"dependencies": {},
 	"devDependencies": {
 		"@babel/core": "^7.2.2",
 		"@babel/preset-env": "^7.2.3",
-		"rollup": "^1.1.0",
-		"rollup-plugin-babel": "^4.3.0",
-		"rollup-plugin-node-resolve": "^4.0.0",
 		"babel-eslint": "^10.0.1",
 		"eslint": ">= 5.0.0",
 		"eslint-config-airbnb": "^17.1.0",
@@ -20,9 +18,12 @@
 		"eslint-plugin-jsx-a11y": "^6.1.1",
 		"eslint-plugin-prettier": "^3.0.1",
 		"eslint-plugin-react": "^7.11.0",
-		"prettier": "^1.15.3"
+		"prettier": "^1.15.3",
+		"rollup": "^1.1.0",
+		"rollup-plugin-babel": "^4.3.0",
+		"rollup-plugin-node-resolve": "^4.0.0"
 	},
 	"scripts": {
-		"build": "rollup --config rollup.config.js"
+		"build": "rollup --config rollup.config.js && cp src/index.d.ts lib/"
 	}
 }
