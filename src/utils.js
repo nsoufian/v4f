@@ -19,7 +19,8 @@ export const contextWrapper = context => {
     // assign new function with name of the exported
     // function in module of rules that take
     newContext.prototype[name] = function wrapped(...args) {
-      return this.add(func(...args));
+      // eslint-disable-next-line
+			return this._add(func(...args));
     };
   });
   return newContext;

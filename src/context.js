@@ -1,31 +1,19 @@
 import { getErrorObject, contextWrapper } from "./utils";
 
 class Context {
-  constructor() {
-    // initialize the Context with empty array that will contain
-    // all rules for one field.
-    this.rules = [];
-  }
+  #rules = [];
 
-  /**
-   * push new rule to rules array
-   * @param {Rule} rule
-   */
-  push(rule) {
-    this.rules.push(rule);
-  }
-
-  add(rule) {
+  _add(rule) {
     // push this rule given in param to rules array
-    this.push(rule);
+    this.#rules.push(rule);
     // and return context to continue the chain of rules
     return this;
   }
 
   validate(value, { message = false } = {}) {
-    for (let i = 0; i < this.rules.length; i += 1) {
+    for (let i = 0; i < this.#rules.length; i += 1) {
       // get the current rule from the array
-      const rule = this.rules[i];
+      const rule = this.#rules[i];
       // check if the rule is valide for the value given
       // in param with the rule validator function.
       if (rule.validator(value) !== true) {
