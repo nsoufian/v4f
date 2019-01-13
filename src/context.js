@@ -1,6 +1,6 @@
-import { getErrorObject } from "./utils";
+import { getErrorObject, contextWrapper } from "./utils";
 
-export default class Context {
+class Context {
   constructor() {
     // initialize the Context with empty array that will contain
     // all rules for one field.
@@ -43,3 +43,5 @@ export default class Context {
     return true;
   }
 }
+
+export default contextWrapper(Context);
