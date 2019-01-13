@@ -7,24 +7,32 @@ type Rules = {
   equals(value: any, options: Options): Rules;
 };
 
-type IteratorRules<T = any> = {
-  min(value: Number, options: Options): IteratorRules & Rules & T;
-  max(value: Number, options: Options): IteratorRules & Rules & T;
-  lengthEquals(value: Number, options: Options): IteratorRules & Rules & T;
+type IteratorRules<T = StringRules | ArrayRules> = {
+  min(value: Number, options: Options): IteratorRules<T> & Rules & T;
+  max(value: Number, options: Options): IteratorRules<T> & Rules & T;
+  lengthEquals(value: Number, options: Options): IteratorRules<T> & Rules & T;
   lengthBetween(
     min: Number,
     max: Number,
     options: Options
-  ): IteratorRules & Rules & T;
-};
-
-type NumberRules = {
-  between(min: Number, max: Number, options: Options): NumberRules & Rules;
+  ): IteratorRules<T> & Rules & T;
 };
 
 type StringRules = {
-  startsWith(startValue: String, options: Options): StringRules & Rules;
-  endsWith(endValue: String, options: Options): StringRules & Rules;
+  startsWith(
+    startValue: String,
+    options: Options
+  ): StringRules & Rules & IteratorRules<StringRules>;
+  endsWith(
+    endValue: String,
+    options: Options
+  ): StringRules & Rules & IteratorRules<StringRules>;
+};
+
+type ArrayRules = {};
+
+type NumberRules = {
+  between(min: Number, max: Number, options: Options): NumberRules & Rules;
 };
 
 type BaseRules = {
