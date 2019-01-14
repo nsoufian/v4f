@@ -24,4 +24,7 @@ export const contextWrapper = context => {
   return newContext;
 };
 
-export const isEmpty = obj => JSON.stringify(obj) === JSON.stringify({});
+export const isObjectsEquals = (obj1, obj2) =>
+  JSON.stringify(obj1) === JSON.stringify(obj2);
+
+export const isEmpty = obj => isObjectsEquals(obj, {});

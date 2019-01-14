@@ -1,3 +1,4 @@
+import { isEmpty, isObjectsEquals } from "./utils";
 /**
  * Simple module to declare all rules
  *
@@ -6,12 +7,20 @@
  * Generic Rules
  ********************************************************************************** */
 export const required = (options = {}) => ({
-  validator: value => value !== "" && value !== null && value !== undefined,
+  validator: value =>
+    value !== "" &&
+    value !== null &&
+    value !== undefined &&
+    isEmpty(value) !== true &&
+    (value instanceof Array ? value.length !== 0 : true),
   options
 });
 
 export const equals = (equalsValue, options = {}) => ({
-  validator: value => value === equalsValue,
+  validator: value =>
+    typeof value === "object" && typeof equalsValue === "object"
+      ? isObjectsEquals(value, equalsValue)
+      : value === equalsValue,
   options
 });
 
@@ -36,12 +45,12 @@ export const endsWith = (endValue, options = {}) => ({
 /** **********************************************************************************
  * Iterator Rules
  ********************************************************************************** */
-export const min = (minValue, options = {}) => ({
+export const minLength = (minValue, options = {}) => ({
   validator: value => value.length >= minValue,
   options
 });
 
-export const max = (maxValue, options = {}) => ({
+export const maxLegnth = (maxValue, options = {}) => ({
   validator: value => value.length <= maxValue,
   options
 });
@@ -51,8 +60,8 @@ export const lengthEquals = (length, options = {}) => ({
   options
 });
 
-export const lengthBetween = (minLength, maxLength, options = {}) => ({
-  validator: value => minLength <= value.length <= maxLength,
+export const lengthBetween = (minValue, maxValue, options = {}) => ({
+  validator: value => minValue <= value.length && value.length <= maxValue,
   options
 });
 
@@ -66,7 +75,7 @@ export const number = (options = {}) => ({
 });
 
 export const between = (minValue, maxValue, options = {}) => ({
-  validator: value => minValue <= value <= maxValue,
+  validator: value => minValue <= value && value <= maxValue,
   options
 });
 /** **********************************************************************************
