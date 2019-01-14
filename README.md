@@ -1,2 +1,2 @@
-# v4f, Validation For Froms
+# V4F, Validation For Froms [![CircleCI](https://circleci.com/gh/reyx7/v4f/tree/master.svg?style=svg&circle-token=dd21504e80b5908041a89229c6585f112bfaef52)](https://circleci.com/gh/reyx7/v4f/tree/master) [![npm version](https://badge.fury.io/js/v4f.svg)](https://badge.fury.io/js/v4f) [![codecov](https://codecov.io/gh/reyx7/v4f/branch/master/graph/badge.svg?token=tfmtpJgkJK)](https://codecov.io/gh/reyx7/v4f)
 Javascript light validator library for from and types 
