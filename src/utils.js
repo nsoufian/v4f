@@ -1,9 +1,7 @@
 import * as rules from "./rules";
 
-export const getErrorObject = rule => ({
-  message: rule.options.message !== undefined ? rule.options.message : "",
-  success: false
-});
+export const getErrorMessage = rule =>
+  rule.options.message !== undefined ? rule.options.message : "";
 
 /**
  * Add all rules to Context class using prototype Interface

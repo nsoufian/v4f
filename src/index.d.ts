@@ -18,6 +18,10 @@ type IteratorRules<T = StringRules | ArrayRules> = {
   ): IteratorRules<T> & Rules & T;
 };
 
+type NumberRules = {
+  between(min: Number, max: Number, options: Options): NumberRules & Rules;
+};
+
 type StringRules = {
   startsWith(
     startValue: String,

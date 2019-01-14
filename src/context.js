@@ -1,4 +1,4 @@
-import { getErrorObject, contextWrapper } from "./utils";
+import { getErrorMessage, contextWrapper } from "./utils";
 
 class Context {
   #rules = [];
@@ -12,18 +12,13 @@ class Context {
 
   validate(value, { message = false } = {}) {
     for (let i = 0; i < this.#rules.length; i += 1) {
-      // get the current rule from the array
-      const rule = this.#rules[i];
-      // check if the rule is valide for the value given
-      // in param with the rule validator function.
-      if (rule.validator(value) !== true) {
-        // the rule is fail , we check if the user
-        // want a message error or boolean
-        if (message !== false) {
-          // options message is true the user need
-          // a error object rather than boolean indicator
-          return getErrorObject(rule);
-        }
+      // Get validator function and options object from
+      // the current rule.
+      const { validator, options } = this.#rules[i];
+      if (validator(value) !== true) {
+        // the rule is fail , we check if the user want
+        // a error message indicator or boolean.
+        if (message === false) return getErrorMessage(options);
         return false;
       }
     }
