@@ -45,5 +45,9 @@ type BaseRules = {
   boolean(options: Options): Rules;
   object(options: Options): Rules;
 };
+type TypeSchema = {
+  validate(values: Object, options: Options): Object | Boolean;
+};
 
 export function field(): BaseRules;
+export function typeSchema(schema: Object): BaseRules;

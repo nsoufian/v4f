@@ -30,6 +30,7 @@
 	},
 	"scripts": {
 		"build": "rollup -c && cp src/index.d.ts lib/",
+		"watch": "rollup -c -w",
 		"test": "jest",
 		"lint": "eslint ./src"
 	}

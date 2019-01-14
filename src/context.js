@@ -18,7 +18,7 @@ class Context {
       if (validator(value) !== true) {
         // the rule is fail , we check if the user want
         // a error message indicator or boolean.
-        if (message === false) return getErrorMessage(options);
+        if (message === true) return getErrorMessage(options);
         return false;
       }
     }

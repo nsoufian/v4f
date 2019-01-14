@@ -1,7 +1,7 @@
 import * as rules from "./rules";
 
-export const getErrorMessage = rule =>
-  rule.options.message !== undefined ? rule.options.message : "";
+export const getErrorMessage = options =>
+  options.message !== undefined ? options.message : false;
 
 /**
  * Add all rules to Context class using prototype Interface
@@ -23,3 +23,5 @@ export const contextWrapper = context => {
   });
   return newContext;
 };
+
+export const isEmpty = obj => JSON.stringify(obj) === JSON.stringify({});
