@@ -5,5 +5,14 @@
 	"parser": "babel-eslint",
 	"rules": {
 		"prettier/prettier": ["error"]
-	}
+	},
+	"overrides": [
+		{
+			"files": ["*.test.js"],
+			"rules": {
+				"no-unused-expressions": "off",
+				"no-undef": "off"
+			}
+		}
+	]
 }
