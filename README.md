@@ -18,8 +18,8 @@
   <a href="https://badge.fury.io/js/v4f">
   <img alt="undefined" src="https://img.shields.io/bundlephobia/min/v4f.svg">
   </a>
-  <a href="#">
-  <img alt="undefined" src="https://img.shields.io/github/license/reyx7/v4f.svg">
+  <a href="https://github.com/reyx7/v4f/blob/master/LICENSE">
+  <img alt="undefined" src="https://img.shields.io/npm/l/v4f.svg">
   </a>
 </p>
 
