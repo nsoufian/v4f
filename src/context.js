@@ -1,4 +1,5 @@
 import { getErrorMessage, contextWrapper } from "./utils";
+import * as rules from "./rules";
 
 class Context {
   #rules = [];
@@ -27,4 +28,4 @@ class Context {
   }
 }
 
-export default contextWrapper(Context);
+export default contextWrapper(rules)(Context);
