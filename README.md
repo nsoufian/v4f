@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="#"
+  <a href="#">
 <img style="center" src="https://i.ibb.co/XVSH26K/Text-placeholder.png" width="200" height="200">
   </a>
 </p>
