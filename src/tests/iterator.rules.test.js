@@ -1,5 +1,10 @@
-import get from "./index";
-import { minLength, maxLegnth, lengthEquals, lengthBetween } from "../rules";
+import { getValidator as get } from "../utils";
+import {
+  minLength,
+  maxLegnth,
+  lengthEquals,
+  lengthBetween
+} from "../rules/iterator";
 
 test("Test Iterator minLength Rule", () => {
   // Get validator with min length of 5
