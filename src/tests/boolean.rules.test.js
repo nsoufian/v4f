@@ -1,24 +1,56 @@
 import { getValidator as get } from "../utils";
-import { boolean, falsy, truthy } from "../rules/boolean";
+import * as booleanRules from "../rules/boolean";
 
-test("Test Boolean Rule", () => {
-  const validator = get()(boolean);
-  expect(validator(true)).toBe(true);
-  expect(validator(false)).toBe(true);
-  expect(validator("")).toBe(false);
-  expect(validator("true")).toBe(false);
-  expect(validator("false")).toBe(false);
-  expect(validator(3)).toBe(false);
+/**
+ * Test boolean rule with multiple values
+ * */
+
+const boolean = get()(booleanRules.boolean);
+
+test("Boolean with value false Should be true", () => {
+  expect(boolean(false)).toBe(true);
 });
 
-test("Test Boolean Rule truthy", () => {
-  const validator = get()(truthy);
-  expect(validator(true)).toBe(true);
-  expect(validator(false)).toBe(false);
+test("Boolean with value true Should be true", () => {
+  expect(boolean(true)).toBe(true);
 });
 
-test("Test Boolean Rule falsy", () => {
-  const validator = get()(falsy);
-  expect(validator(false)).toBe(true);
-  expect(validator(true)).toBe(false);
+test("Boolean with value '' should be false", () => {
+  expect(boolean("")).toBe(false);
+});
+
+test("Boolean with value null Should be false", () => {
+  expect(boolean(null)).toBe(false);
+});
+
+test("Boolean with value 3 Should be false", () => {
+  expect(boolean(3)).toBe(false);
+});
+
+test("Boolean with value [2,3,4] Should be false", () => {
+  expect(boolean([2, 3, 4])).toBe(false);
+});
+
+test("Boolean with value no value Should be false", () => {
+  expect(boolean()).toBe(false);
+});
+
+const truthy = get()(booleanRules.truthy);
+
+test("Truthy with value true should be true", () => {
+  expect(truthy(true)).toBe(true);
+});
+
+test("Truthy with value false should be false", () => {
+  expect(truthy(false)).toBe(false);
+});
+
+const falsy = get()(booleanRules.falsy);
+
+test("Falsy with value true should be false", () => {
+  expect(falsy(true)).toBe(false);
+});
+
+test("Falsy with value false should be true", () => {
+  expect(falsy(false)).toBe(true);
 });
