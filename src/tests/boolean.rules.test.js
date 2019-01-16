@@ -1,5 +1,5 @@
-import get from "./index";
-import { boolean, falsy, truthy } from "../rules";
+import { getValidator as get } from "../utils";
+import { boolean, falsy, truthy } from "../rules/boolean";
 
 test("Test Boolean Rule", () => {
   const validator = get()(boolean);

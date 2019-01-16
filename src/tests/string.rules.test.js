@@ -1,5 +1,5 @@
-import get from "./index";
-import { string, startsWith, endsWith } from "../rules";
+import { getValidator as get } from "../utils";
+import { string, startsWith, endsWith } from "../rules/string";
 
 test("Test String Rule", () => {
   const valideValue = "String";

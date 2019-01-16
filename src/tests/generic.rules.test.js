@@ -1,5 +1,5 @@
-import get from "./index";
-import { required, equals } from "../rules";
+import { getValidator as get } from "../utils";
+import { required, equals } from "../rules/generic";
 
 test("Test Generic required Rule", () => {
   const validator = get()(required);

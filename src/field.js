@@ -1,6 +1,7 @@
-import { getErrorMessage, contextWrapper } from "./utils";
+import { getErrorMessage, fieldWrapper } from "./utils";
+import rules from "./rules/index";
 
-class Context {
+class Field {
   #rules = [];
 
   _add(rule) {
@@ -27,4 +28,4 @@ class Context {
   }
 }
 
-export default contextWrapper(Context);
+export default fieldWrapper(rules)(Field);

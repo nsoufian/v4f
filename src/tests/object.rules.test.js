@@ -1,5 +1,5 @@
-import get from "./index";
-import { object } from "../rules";
+import { getValidator as get } from "../utils";
+import { object } from "../rules/object";
 
 test("Test Boolean Type Rule", () => {
   const validator = get()(object);
