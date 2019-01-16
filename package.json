@@ -33,6 +33,7 @@
 		"build": "rollup -c && cp src/index.d.ts lib/",
 		"watch": "rollup -c -w",
 		"test": "jest",
+		"tc": "jest --coverage && rm -rf ./coverage",
 		"lint": "eslint ./src",
 		"coverage": "codecov"
 	}

@@ -4,7 +4,9 @@
 	"plugins": ["prettier"],
 	"parser": "babel-eslint",
 	"rules": {
-		"prettier/prettier": ["error"]
+		"prettier/prettier": ["error"],
+		"func-names": "off",
+		"no-underscore-dangle": "off"
 	},
 	"overrides": [
 		{
