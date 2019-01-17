@@ -4,6 +4,6 @@ export const number = (options = {}) => ({
 });
 
 export const between = (minValue, maxValue, options = {}) => ({
-  validator: value => minValue <= value && value <= maxValue,
+  validator: value => value >= minValue && value <= maxValue,
   options
 });
