@@ -1,5 +1,5 @@
 export const object = (options = {}) => ({
-  validator: value => typeof value === "object",
+  validator: value => typeof value === "object" && !(value instanceof Array),
   options
 });
 

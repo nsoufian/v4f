@@ -1,34 +1,44 @@
 import { getValidator as get } from "../utils";
-import { string, startsWith, endsWith } from "../rules/string";
+import * as rules from "../rules/string";
 
-test("Test String Rule", () => {
-  const valideValue = "String";
-  const notValideValue1 = 333;
-  const notValideValue2 = {};
-  const notValideValue3 = ["string"];
-  const notValideValue4 = true;
-  const validator = get()(string);
-  expect(validator(valideValue)).toBe(true);
-  expect(validator(notValideValue1)).toBe(false);
-  expect(validator(notValideValue2)).toBe(false);
-  expect(validator(notValideValue3)).toBe(false);
-  expect(validator(notValideValue4)).toBe(false);
+const string = get()(rules.string);
+
+test("String rule with value 'this is string' should be true ", () => {
+  expect(string("this is string")).toBe(true);
 });
 
-test("Test String StartsWith Rule", () => {
-  const valideValue = "ValideString";
-  const notValidevalue = "NotValideString";
-  const startValue = "Valide";
-  const validator = get(startValue)(startsWith);
-  expect(validator(valideValue)).toBe(true);
-  expect(validator(notValidevalue)).toBe(false);
+test("String rule with value 33 should be false ", () => {
+  expect(string(33)).toBe(false);
 });
 
-test("Test String endsWith Rule", () => {
-  const valideValue = "ValideStringend";
-  const notValidevalue = "NotValideString";
-  const endValue = "end";
-  const validator = get(endValue)(endsWith);
-  expect(validator(valideValue)).toBe(true);
-  expect(validator(notValidevalue)).toBe(false);
+test("String rule with value {a:3} should be false ", () => {
+  expect(string({ a: 3 })).toBe(false);
+});
+
+test("String rule with value true should be false ", () => {
+  expect(string(true)).toBe(false);
+});
+
+test("String rule with value ['string'] should be false ", () => {
+  expect(string(["string"])).toBe(false);
+});
+
+const startsWith = (start, value) => get(start)(rules.startsWith)(value);
+
+test("StartsWith rule with start 'abc' and value 'abcdf' should be true", () => {
+  expect(startsWith("abc", "abcd")).toBe(true);
+});
+
+test("StartsWith rule with start 'abc' and value 'fdcab' should be true", () => {
+  expect(startsWith("abc", "fdcab")).toBe(false);
+});
+
+const endsWith = (end, value) => get(end)(rules.endsWith)(value);
+
+test("StartsWith rule with end 'abc' and value 'fdabc' should be true", () => {
+  expect(endsWith("abc", "fdabc")).toBe(true);
+});
+
+test("StartsWith rule with end 'abc' and value 'abcdf' should be true", () => {
+  expect(endsWith("abc", "abcdf")).toBe(false);
 });
