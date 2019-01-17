@@ -23,5 +23,22 @@
   </a>
 </p>
 
-# V4F, Validation For Froms
+
+# Description :
+### V4F, Validation for Forms
 Javascript light library for froms data validations using schema types.
+###  New validation library again   !
+
+why new validation library where they are several good ones around, yes you are completely right. But the problem with these libraries is that almost all of the theme focus in data validation and they forget the key reason why we do validation for, is that we desire to guide our users by showing them what they missing or what they doing wrong with  some pieces of information, but sadly  you end up with generic messages errors or writing code on  the top of this libraries every time you use them.
+
+**V4F** comes to solve this problem by focus in these two aspect validations and errors messages with magical extra functionalities out of the box : 
+
+- **Schema** : v4f use the concept of the schema types to indicate your rules that will be checked later were we need it, this notion is powerful it lets you create complex rules ones and use it multiple times.
+
+- **Modularity**  : 
+
+- **Crossfield validation** : 
+
+- **One field validation** : 
+
+- **Cross server-client  validation**:  no more duplicated validation in the server and client side with **V4F** you can now create your validation schemas in the server side and let your client-side "browser, mobile..." consume this schema to validate data over rest API or graphql.
