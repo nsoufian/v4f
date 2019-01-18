@@ -1,4 +1,3 @@
-import { getErrorMessage, fieldWrapper } from "./utils";
 import rules from "./rules/index";
 
 class Field {
@@ -16,12 +15,14 @@ class Field {
       // Get validator function and options object from
       // the current rule.
       const { validator, options } = this.#rules[i];
-      const validation = validator(value);
+      const isValide = validator(value);
       if (
-        (options.when && options.when.validate(values) !== validation) ||
-        (!options.when && !validation)
+        (options.when && !isValide && options.when.validate(values)) ||
+        (!options.when && !isValide)
       ) {
-        if (message === true) return getErrorMessage(options);
+        if (message === true) {
+          return options.message;
+        }
         return false;
       }
     }
@@ -30,4 +31,10 @@ class Field {
   }
 }
 
-export default fieldWrapper(rules)(Field);
+Object.entries(rules).forEach(([name, rule]) => {
+  Field.prototype[name] = function(...args) {
+    return this._add(rule(...args));
+  };
+});
+
+export default Field;
