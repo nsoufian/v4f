@@ -11,12 +11,22 @@ class Field {
     return this;
   }
 
-  validate(value, { message = false } = {}) {
+  validate(value, { message = false, values } = {}) {
     for (let i = 0; i < this.#rules.length; i += 1) {
       // Get validator function and options object from
       // the current rule.
       const { validator, options } = this.#rules[i];
-      if (validator(value) !== true) {
+      const validation = validator(value);
+      if (options.when !== undefined) {
+        const when = options.when.validate(values);
+        if (validation === when) {
+          continue;
+        } else {
+          if (message === true) return getErrorMessage(options);
+          return false;
+        }
+      }
+      if (validation !== true && options.wen === undefined) {
         // the rule is fail , we check if the user want
         // a error message indicator or boolean.
         if (message === true) return getErrorMessage(options);
