@@ -17,18 +17,10 @@ class Field {
       // the current rule.
       const { validator, options } = this.#rules[i];
       const validation = validator(value);
-      if (options.when !== undefined) {
-        const when = options.when.validate(values);
-        if (validation === when) {
-          continue;
-        } else {
-          if (message === true) return getErrorMessage(options);
-          return false;
-        }
-      }
-      if (validation !== true && options.wen === undefined) {
-        // the rule is fail , we check if the user want
-        // a error message indicator or boolean.
+      if (
+        (options.when && options.when.validate(values) !== validation) ||
+        (!options.when && !validation)
+      ) {
         if (message === true) return getErrorMessage(options);
         return false;
       }

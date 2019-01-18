@@ -1,4 +1,5 @@
-const execute = eval;
+import { execute } from "./utils";
+
 class Condition {
   #rules = [];
 
@@ -30,7 +31,7 @@ class Condition {
         result.push(this.#rules[i]);
       }
     }
-    return execute(result.join(" "));
+    return execute(result);
   }
 }
 
