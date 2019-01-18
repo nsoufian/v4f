@@ -11,14 +11,16 @@ class Field {
     return this;
   }
 
-  validate(value, { message = false } = {}) {
+  validate(value, { message = false, values } = {}) {
     for (let i = 0; i < this.#rules.length; i += 1) {
       // Get validator function and options object from
       // the current rule.
       const { validator, options } = this.#rules[i];
-      if (validator(value) !== true) {
-        // the rule is fail , we check if the user want
-        // a error message indicator or boolean.
+      const validation = validator(value);
+      if (
+        (options.when && options.when.validate(values) !== validation) ||
+        (!options.when && !validation)
+      ) {
         if (message === true) return getErrorMessage(options);
         return false;
       }

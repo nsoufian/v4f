@@ -17,3 +17,11 @@ export const equals = (equalsValue, options = {}) => ({
       : value === equalsValue,
   options
 });
+
+export const notEquals = (equalsValue, options = {}) => ({
+  validator: value =>
+    typeof value === "object" && typeof equalsValue === "object"
+      ? !isObjectsEquals(value, equalsValue)
+      : value !== equalsValue,
+  options
+});

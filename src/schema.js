@@ -4,7 +4,7 @@ const booleanValidate = (schema, values) => {
   const rules = Object.entries(schema);
   for (let i = 0; i < rules.length; i += 1) {
     const [name, rule] = rules[i];
-    if (!rule.validate(values[name])) {
+    if (!rule.validate(values[name], { values })) {
       return false;
     }
   }
@@ -15,7 +15,8 @@ const msgValidate = (schema, values) => {
   const errors = {};
   Object.entries(schema).forEach(([name, rule]) => {
     const result = rule.validate(values[name], {
-      message: true
+      message: true,
+      values
     });
     if (result !== true) errors[name] = result;
   });
