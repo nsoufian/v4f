@@ -1,9 +1,9 @@
-import Field from "./field";
-import Schema from "./schema";
-import ConditionObject from "./condition";
+import FieldObject from "./field";
+import SchemaObject from "./schema";
+import WhenObject from "./when";
 
-export const field = () => new Field();
+export const Field = () => new FieldObject();
 
-export const When = (name, rule) => new ConditionObject().when(name, rule);
+export const When = (name, rule) => new WhenObject().when(name, rule);
 
-export const typeSchema = Schema;
+export const Schema = SchemaObject;

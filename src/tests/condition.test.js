@@ -1,6 +1,6 @@
-import { field as Field, typeSchema, When } from "../index";
+import { Field, Schema, When } from "../index";
 
-const Server = typeSchema({
+const Server = Schema({
   host: Field()
     .string()
     .required(),
@@ -67,7 +67,7 @@ test("Schema Server with user admin and sudo false should be false", () => {
   ).toBe(false);
 });
 
-const User = typeSchema({
+const User = Schema({
   username: Field()
     .string()
     .required(),

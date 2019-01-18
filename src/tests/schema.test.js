@@ -1,4 +1,4 @@
-import { typeSchema, field } from "../index";
+import { Schema, Field } from "../index";
 
 const valideData = {
   username: "username",
@@ -14,41 +14,41 @@ const notValideData = {
   email: 3,
   isAdmin: "true"
 };
-const User = typeSchema({
-  username: field()
+const User = Schema({
+  username: Field()
     .string({ message: "string" })
     .minLength(6, { message: "minLength" })
     .required({ message: "required" }),
-  password: field()
+  password: Field()
     .string({ message: "string" })
     .minLength(6, { message: "minLength" })
     .required({ message: "required" }),
-  email: field()
+  email: Field()
     .string({ message: "string" })
     .required({ message: "required" }),
-  isAdmin: field()
+  isAdmin: Field()
     .boolean({ message: "boolean" })
     .required({ message: "required" }),
-  url: field()
+  url: Field()
     .string({ message: "string" })
     .required({ message: "required" })
 });
 
-const Address = typeSchema({
-  country: field()
+const Address = Schema({
+  country: Field()
     .string({ message: "string" })
     .required({ message: "required" }),
-  city: field()
+  city: Field()
     .string({ message: "string" })
     .required({ message: "required" }),
-  zipCode: field()
+  zipCode: Field()
     .number({ message: "number" })
     .between(75000, 90000, { message: "between" })
     .required({ message: "required" })
 });
 
-const Client = typeSchema({
-  name: field()
+const Client = Schema({
+  name: Field()
     .string({ message: "string" })
     .required({ message: "required" }),
   address: Address
@@ -120,15 +120,15 @@ test("Validate one username Field of schema with options message true with 3 sho
   expect(User.username.validate(3, { message: true })).toBe("string");
 });
 
-test("Validate one field of nested schema with no options with valide data should be true", () => {
+test("Validate one Field of nested schema with no options with valide data should be true", () => {
   expect(Client.address.zipCode.validate(75020)).toBe(true);
 });
 
-test("Validate one field of nested schema with no options with notValide data should be true", () => {
+test("Validate one Field of nested schema with no options with notValide data should be true", () => {
   expect(Client.address.zipCode.validate(20)).toBe(false);
 });
 
-test("Validate one field of nested schema with message options and not valide data should be 'minLength'", () => {
+test("Validate one Field of nested schema with message options and not valide data should be 'minLength'", () => {
   expect(Client.address.zipCode.validate(20, { message: true })).toBe(
     "between"
   );

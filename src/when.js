@@ -1,6 +1,6 @@
 import { execute } from "./utils";
 
-class Condition {
+class When {
   #rules = [];
 
   when(name, rule) {
@@ -35,4 +35,4 @@ class Condition {
   }
 }
 
-export default Condition;
+export default When;
