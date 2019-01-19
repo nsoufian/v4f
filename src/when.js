@@ -1,4 +1,4 @@
-import { execute } from "./utils";
+import { execute, getValue } from "./utils";
 
 class When {
   #rules = [];
@@ -26,7 +26,7 @@ class When {
       if (typeof this.#rules[i] === "object") {
         const { name, rule } = this.#rules[i];
         // TODO get nested value
-        result.push(rule.validate(values[name]).toString());
+        result.push(rule.validate(getValue(name, values)));
       } else {
         result.push(this.#rules[i]);
       }
