@@ -2,52 +2,79 @@ type Options = {
   message: string;
 };
 
-type Rules = {
-  required(options: Options): Rules;
-  equals(value: any, options: Options): Rules;
+type Rules<T = any, R = any> = {
+  required(options: Options): Rules<T, R> & T & R;
+  equals(value: any, options: Options): Rules<T, R> & T & R;
 };
 
 type IteratorRules<T = StringRules | ArrayRules> = {
-  min(value: Number, options: Options): IteratorRules<T> & Rules & T;
-  max(value: Number, options: Options): IteratorRules<T> & Rules & T;
-  lengthEquals(value: Number, options: Options): IteratorRules<T> & Rules & T;
+  minLength(
+    value: Number,
+    options: Options
+  ): IteratorRules<T> & Rules<T, IteratorRules> & T;
+  maxLength(
+    value: Number,
+    options: Options
+  ): IteratorRules<T> & Rules<T, IteratorRules> & T;
+  lengthEquals(
+    value: Number,
+    options: Options
+  ): IteratorRules<T> & Rules<IteratorRules, T> & T;
   lengthBetween(
     min: Number,
     max: Number,
     options: Options
-  ): IteratorRules<T> & Rules & T;
+  ): IteratorRules<IteratorRules> & Rules<IteratorRules, T> & T;
 };
 
 type NumberRules = {
-  between(min: Number, max: Number, options: Options): NumberRules & Rules;
+  between(
+    min: Number,
+    max: Number,
+    options: Options
+  ): NumberRules & Rules<NumberRules, NumberRules>;
 };
 
 type StringRules = {
   startsWith(
     startValue: String,
     options: Options
-  ): StringRules & Rules & IteratorRules<StringRules>;
+  ): StringRules &
+    Rules<StringRules, IteratorRules> &
+    IteratorRules<StringRules>;
   endsWith(
     endValue: String,
     options: Options
-  ): StringRules & Rules & IteratorRules<StringRules>;
+  ): StringRules &
+    Rules<StringRules, IteratorRules> &
+    IteratorRules<StringRules>;
+};
+
+type BooleanRules = {
+  falsy(options: Options): BooleanRules & Rules<BooleanRules, BooleanRules>;
+  truthy(options: Options): BooleanRules & Rules<BooleanRules, BooleanRules>;
 };
 
 type ArrayRules = {};
 
-type NumberRules = {
-  between(min: Number, max: Number, options: Options): NumberRules & Rules;
+type Field = {
+  string(
+    options: Options
+  ): StringRules &
+    IteratorRules<StringRules> &
+    Rules<StringRules, IteratorRules>;
+  number(options: Options): Rules<NumberRules, NumberRules>;
+  boolean(options: Options): BooleanRules & Rules<BooleanRules, BooleanRules>;
 };
 
-type BaseRules = {
-  string(options: Options): StringRules & IteratorRules<StringRules> & Rules;
-  number(options: Options): Rules;
-  boolean(options: Options): Rules;
-  object(options: Options): Rules;
-};
-type TypeSchema = {
+type Schema<T> = {
+  validate(values: Object, options: Options): Object | Boolean;
+} & T;
+
+type Field = {
   validate(values: Object, options: Options): Object | Boolean;
 };
 
-export function field(): BaseRules;
-export function typeSchema(schema: Object): BaseRules;
+export function Field(): Field;
+export function Schema<T = Object>(schema: T): Schema<T>;
+export function When(target: String | Array, condition: Field): When;
