@@ -1,7 +1,4 @@
-import { getValidator as get } from "../utils";
-import * as generic from "../rules/generic";
-
-const required = get()(generic.required);
+import { equals, required } from "../rules/generic";
 
 test("Required rule with value 'valide' should be true", () => {
   expect(required("value")).toBe(true);
@@ -43,8 +40,6 @@ test("Required rule with value undefined should be false", () => {
 test("Required rule with value null should be false", () => {
   expect(required(null)).toBe(false);
 });
-
-const equals = (value, compair) => get(value)(generic.equals)(compair);
 
 test("Equals rule with values 'str','str' should be true", () => {
   expect(equals("str", "str")).toBe(true);

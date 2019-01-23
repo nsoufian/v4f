@@ -1,7 +1,9 @@
-import { getValidator as get } from "../utils";
-import * as rules from "../rules/iterator";
-
-const minLength = (min, value) => get(min)(rules.minLength)(value);
+import {
+  lengthBetween,
+  maxLength,
+  lengthEquals,
+  minLength
+} from "../rules/iterator";
 
 test("minLength rule with min 5 and string value 'abcde' should be true ", () => {
   expect(minLength(5, "abcde")).toBe(true);
@@ -27,8 +29,6 @@ test("minLength rule with min 5 and array value [1,2,3] should be false ", () =>
   expect(minLength(5, [1, 2, 3])).toBe(false);
 });
 
-const maxLength = (max, value) => get(max)(rules.maxLegnth)(value);
-
 test("maxLength rule with max 5 and string value 'abcde' should be true ", () => {
   expect(maxLength(5, "abcde")).toBe(true);
 });
@@ -53,8 +53,6 @@ test("maxLength rule with max 5 and array value [1,2,3] should be true ", () => 
   expect(maxLength(5, [1, 2, 3])).toBe(true);
 });
 
-const lengthEquals = (length, value) => get(length)(rules.lengthEquals)(value);
-
 test("LegnthEquals rule with length 3 and value 'abc' should be true", () => {
   expect(lengthEquals(3, "abc")).toBe(true);
 });
@@ -70,9 +68,6 @@ test("LegnthEquals rule with length 3 and value 'abcd' should be false", () => {
 test("LegnthEquals rule with length 3 and array value [1,2,3,4] should be false", () => {
   expect(lengthEquals(3, [1, 2, 3, 4])).toBe(false);
 });
-
-const lengthBetween = (min, max, value) =>
-  get(min, max, value)(rules.lengthBetween)(value);
 
 test("LengthBetween rule with min 3, max 5 and string value 'abc' should be true ", () => {
   expect(lengthBetween(3, 5, "abc")).toBe(true);

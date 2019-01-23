@@ -1,11 +1,8 @@
-import { getValidator as get } from "../utils";
-import * as booleanRules from "../rules/boolean";
+import { boolean, truthy, falsy } from "../rules/boolean";
 
 /**
  * Test boolean rule with multiple values
  * */
-
-const boolean = get()(booleanRules.boolean);
 
 test("Boolean with value false Should be true", () => {
   expect(boolean(false)).toBe(true);
@@ -35,8 +32,6 @@ test("Boolean with value no value Should be false", () => {
   expect(boolean()).toBe(false);
 });
 
-const truthy = get()(booleanRules.truthy);
-
 test("Truthy with value true should be true", () => {
   expect(truthy(true)).toBe(true);
 });
@@ -44,8 +39,6 @@ test("Truthy with value true should be true", () => {
 test("Truthy with value false should be false", () => {
   expect(truthy(false)).toBe(false);
 });
-
-const falsy = get()(booleanRules.falsy);
 
 test("Falsy with value true should be false", () => {
   expect(falsy(true)).toBe(false);

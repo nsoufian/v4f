@@ -1,7 +1,4 @@
-import { getValidator as get } from "../utils";
-import * as rules from "../rules/object";
-
-const object = get()(rules.object);
+import { object } from "../rules/object";
 
 test("Object rule with value {a:1} should be true", () => {
   expect(object({ a: 1 })).toBe(true);

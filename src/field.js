@@ -1,4 +1,5 @@
 import rules from "./rules/index";
+import { resolveArgs } from "./utils";
 
 class Field {
   #rules = [];
@@ -14,8 +15,8 @@ class Field {
     for (let i = 0; i < this.#rules.length; i += 1) {
       // Get validator function and options object from
       // the current rule.
-      const { validator, options } = this.#rules[i];
-      const isValide = validator(value);
+      const { validator, options, args } = this.#rules[i];
+      const isValide = validator(...resolveArgs(args, values), value);
       if (
         (options.when && !isValide && options.when.validate(values)) ||
         (!options.when && !isValide)
@@ -33,7 +34,12 @@ class Field {
 
 Object.entries(rules).forEach(([name, rule]) => {
   Field.prototype[name] = function(...args) {
-    return this._add(rule(...args));
+    return this._add({
+      validator: rule,
+      name,
+      args: args.slice(0, rule.length - 1),
+      options: args[rule.length - 1] === undefined ? {} : args[rule.length - 1]
+    });
   };
 });
 

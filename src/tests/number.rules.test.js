@@ -1,7 +1,6 @@
-import { getValidator as get } from "../utils";
-import * as rules from "../rules/number";
+import { between, number } from "../rules/number";
 
-const number = get()(rules.number);
+// number rule tests
 
 test("Number rule with 3 should be true", () => {
   expect(number(3)).toBe(true);
@@ -23,7 +22,7 @@ test("Number rule with {1:1} should be false", () => {
   expect(number({ 1: 1 })).toBe(false);
 });
 
-const between = (min, max, value) => get(min, max)(rules.between)(value);
+// between rule tests
 
 test("between rule min 3 and max 5 with value 4 should be true", () => {
   expect(between(3, 5, 4)).toBe(true);

@@ -133,3 +133,53 @@ test("Validate one Field of nested schema with message options and not valide da
     "between"
   );
 });
+
+const Account = Schema({
+  username: Field()
+    .string()
+    .required(),
+  email: Field()
+    .string()
+    .required(),
+  password: Field()
+    .string()
+    .notEquals(["#username"])
+    .required(),
+  passwordConfirmation: Field()
+    .string()
+    .equals(["#password"])
+    .required()
+});
+
+test("Validate cross rule with password match password confirmation and password not match username should be true", () => {
+  expect(
+    Account.validate({
+      username: "myusername",
+      email: "my@mail.com",
+      password: "my@mail.coma",
+      passwordConfirmation: "my@mail.coma"
+    })
+  ).toBe(true);
+});
+
+test("Validate cross rule with password not match password confirmation and password not match username should be true", () => {
+  expect(
+    Account.validate({
+      username: "myusername",
+      email: "my@mail.com",
+      password: "123456",
+      passwordConfirmation: "12345"
+    })
+  ).toBe(false);
+});
+
+test("Validate cross rule with password not password confirmation and password match username should be true", () => {
+  expect(
+    Account.validate({
+      username: "myusername",
+      email: "my@mail.com",
+      password: "myusername",
+      passwordConfirmation: "myusername"
+    })
+  ).toBe(false);
+});
