@@ -18,8 +18,8 @@ class Field {
       const { validator, options, args } = this.#rules[i];
       const isValide = validator(...resolveArgs(args, values), value);
       if (
-        (options.when && !isValide && options.when.validate(values)) ||
-        (!options.when && !isValide)
+        (options.apply && !isValide && options.apply.validate(values)) ||
+        (!options.apply && !isValide)
       ) {
         if (message === true) {
           return options.message;
