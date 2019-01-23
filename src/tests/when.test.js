@@ -10,7 +10,7 @@ const Server = Schema({
   sudo: Field()
     .boolean()
     .truthy({
-      when: When(
+      apply: When(
         "user",
         Field()
           .string()
@@ -18,7 +18,7 @@ const Server = Schema({
       )
     })
     .falsy({
-      when: When(
+      apply: When(
         "user",
         Field()
           .string()
@@ -80,7 +80,7 @@ const User = Schema({
   url: Field()
     .string()
     .required({
-      when: When(
+      apply: When(
         ["isAdmin", "isActive"],
         Field()
           .boolean()
