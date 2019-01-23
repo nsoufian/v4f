@@ -19,7 +19,10 @@ export const resolveArgs = (args, values) => {
   const newArgs = [];
   args.forEach(arg => {
     if (arg instanceof Array && arg[0][0] === "#") {
-      const value = getNestedValue(arg[0].slice(1), values);
+      let value = getNestedValue(arg[0].slice(1), values);
+      if (arg.length > 1) {
+        value = arg[1](value);
+      }
       newArgs.push(value);
     } else {
       newArgs.push(arg);

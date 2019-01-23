@@ -85,12 +85,19 @@ const User = Schema({
         Field()
           .boolean()
           .truthy()
-      ).or(
-        "username",
-        Field()
-          .string()
-          .equals("admin")
       )
+        .or(
+          "username",
+          Field()
+            .string()
+            .equals("admin")
+        )
+        .end(
+          "isActive",
+          Field()
+            .boolean()
+            .truthy()
+        )
     })
 });
 
@@ -102,7 +109,7 @@ test("User Schema with username admin and isAdmin false and isActive false shoul
       isActive: false,
       url: ""
     })
-  ).toBe(false);
+  ).toBe(true);
 });
 
 test("User Schema with username user and isAdmin false and isActive false should be true", () => {
@@ -111,7 +118,7 @@ test("User Schema with username user and isAdmin false and isActive false should
       username: "username",
       isAdmin: false,
       isActive: false,
-      url: ""
+      url: "http://badom"
     })
   ).toBe(true);
 });
@@ -130,8 +137,8 @@ test("User Schema with username user and isAdmin true and isActive true should b
 test("User Schema with username user and isAdmin true and isActive true and no url should be false", () => {
   expect(
     User.validate({
-      username: "username",
-      isAdmin: true,
+      username: "admin",
+      isAdmin: false,
       isActive: true,
       url: ""
     })
