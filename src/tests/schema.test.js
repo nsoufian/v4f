@@ -156,8 +156,8 @@ test("Validate cross rule with password match password confirmation and password
     Account.validate({
       username: "myusername",
       email: "my@mail.com",
-      password: "123456",
-      passwordConfirmation: "123456"
+      password: "my@mail.coma",
+      passwordConfirmation: "my@mail.coma"
     })
   ).toBe(true);
 });

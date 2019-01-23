@@ -11,8 +11,19 @@ export const execute = value => run(value.join(" "));
 export const getNestedValue = (name, values) => {
   const names = name.split(".");
   let value = values[names[0]];
-  for (let i = 1; i < names.length; i += 1) {
-    value = value[names[i]];
-  }
+  for (let i = 1; i < names.length; i += 1) value = value[names[i]];
   return value;
+};
+
+export const resolveArgs = (args, values) => {
+  const newArgs = [];
+  args.forEach(arg => {
+    if (arg instanceof Array && arg[0][0] === "#") {
+      const value = getNestedValue(arg[0].slice(1), values);
+      newArgs.push(value);
+    } else {
+      newArgs.push(arg);
+    }
+  });
+  return newArgs;
 };
