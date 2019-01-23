@@ -1,4 +1,4 @@
-import { endsWith, startsWith, string } from "../rules/string";
+import { endsWith, startsWith, string, pattern } from "../rules/string";
 
 // String rule tests
 
@@ -40,4 +40,12 @@ test("StartsWith rule with end 'abc' and value 'fdabc' should be true", () => {
 
 test("StartsWith rule with end 'abc' and value 'abcdf' should be true", () => {
   expect(endsWith("abc", "abcdf")).toBe(false);
+});
+
+test("Pattern rule with ^abc$ and value abc should be true", () => {
+  expect(pattern("^abc$", "abc")).toBe(true);
+});
+
+test("Pattern rule with ^abc$ and value abr should be false", () => {
+  expect(pattern("^abc$", "abr")).toBe(false);
 });
