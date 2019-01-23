@@ -148,6 +148,7 @@ const Account = Schema({
   passwordConfirmation: Field()
     .string()
     .equals(["#password"])
+    .maxLength(["#email", value => value.length])
     .required()
 });
 
@@ -156,13 +157,13 @@ test("Validate cross rule with password match password confirmation and password
     Account.validate({
       username: "myusername",
       email: "my@mail.com",
-      password: "my@mail.coma",
-      passwordConfirmation: "my@mail.coma"
+      password: "my@mail.co",
+      passwordConfirmation: "my@mail.co"
     })
   ).toBe(true);
 });
 
-test("Validate cross rule with password not match password confirmation and password not match username should be true", () => {
+test("Validate cross rule with password not match password confirmation and password not match username should be false", () => {
   expect(
     Account.validate({
       username: "myusername",
@@ -173,13 +174,13 @@ test("Validate cross rule with password not match password confirmation and pass
   ).toBe(false);
 });
 
-test("Validate cross rule with password not password confirmation and password match username should be true", () => {
+test("Validate cross rule with password length more than email length be false", () => {
   expect(
     Account.validate({
       username: "myusername",
       email: "my@mail.com",
-      password: "myusername",
-      passwordConfirmation: "myusername"
+      password: "myusernameoo",
+      passwordConfirmation: "myusernameoo"
     })
   ).toBe(false);
 });
