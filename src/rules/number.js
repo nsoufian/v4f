@@ -1,9 +1,3 @@
-export const number = (options = {}) => ({
-  validator: value => typeof value === "number",
-  options
-});
+export const number = value => typeof value === "number";
 
-export const between = (minValue, maxValue, options = {}) => ({
-  validator: value => value >= minValue && value <= maxValue,
-  options
-});
+export const between = (min, max, value) => value >= min && value <= max;

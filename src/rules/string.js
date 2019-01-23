@@ -1,14 +1,5 @@
-export const string = (options = {}) => ({
-  validator: value => typeof value === "string",
-  options
-});
+export const string = value => typeof value === "string";
 
-export const startsWith = (startValue, options = {}) => ({
-  validator: value => value.startsWith(startValue),
-  options
-});
+export const startsWith = (str, value) => value.startsWith(str);
 
-export const endsWith = (endValue, options = {}) => ({
-  validator: value => value.endsWith(endValue),
-  options
-});
+export const endsWith = (str, value) => value.endsWith(str);

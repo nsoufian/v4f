@@ -1,19 +1,8 @@
-export const minLength = (minValue, options = {}) => ({
-  validator: value => value.length >= minValue,
-  options
-});
+export const minLength = (min, value) => value.length >= min;
 
-export const maxLegnth = (maxValue, options = {}) => ({
-  validator: value => value.length <= maxValue,
-  options
-});
+export const maxLength = (max, value) => value.length <= max;
 
-export const lengthEquals = (length, options = {}) => ({
-  validator: value => value.length === length,
-  options
-});
+export const lengthEquals = (length, value) => value.length === length;
 
-export const lengthBetween = (minValue, maxValue, options = {}) => ({
-  validator: value => minValue <= value.length && value.length <= maxValue,
-  options
-});
+export const lengthBetween = (min, max, value) =>
+  min <= value.length && value.length <= max;
