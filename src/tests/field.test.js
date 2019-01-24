@@ -9,7 +9,7 @@ test("Validate Optional string Field with value null should be true", () => {
 });
 
 test("Validate Optional string Field with undefined null should be true", () => {
-  expect(email.validate(undefined)).toBe(true);
+  expect(email.validate()).toBe(true);
 });
 
 test("Validate Optional string Field with empty string should be true", () => {
@@ -37,7 +37,7 @@ test("Validate Optional Field with value not boolean should be false", () => {
 });
 
 test("Validate Optional Field with value true should be true", () => {
-  expect(bool.validate(true)).toBe(false);
+  expect(bool.validate(true)).toBe(true);
 });
 
 const address = Field()
@@ -48,7 +48,7 @@ test("Validate Optional object Field with value null should be true", () => {
   expect(address.validate(null)).toBe(true);
 });
 
-test("Validate Optional object Field with undefined null should be true", () => {
+test("Validate Optional object Field with value undefined should be true", () => {
   expect(address.validate(undefined)).toBe(true);
 });
 
