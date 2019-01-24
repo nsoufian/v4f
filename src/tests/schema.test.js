@@ -63,11 +63,11 @@ test("Validate Schema with no options and not valide data should be false", () =
 });
 
 test("Validate Schema with message options and valide data should be null", () => {
-  expect(User.validate(valideData, { message: true })).toBe(null);
+  expect(User.validate(valideData, { verbose: true })).toBe(null);
 });
 
 test("Validate Schema with message options and not valide data should be object...", () => {
-  expect(User.validate(notValideData, { message: true })).toEqual({
+  expect(User.validate(notValideData, { verbose: true })).toEqual({
     username: "minLength",
     email: "string",
     url: "string",
@@ -84,14 +84,14 @@ test("Validate nested schema with no options with valide data should be true", (
   ).toBe(true);
 });
 
-test("Validate nested schema with options message true with not valide data should be object...", () => {
+test("Validate nested schema with options verbose true with not valide data should be object...", () => {
   expect(
     Client.validate(
       {
         name: 1,
         address: { country: null, city: "paris", zipCode: 750 }
       },
-      { message: true }
+      { verbose: true }
     )
   ).toEqual({
     name: "string",
@@ -117,7 +117,7 @@ test("Validate one username Field of schema with no options with 'use' should be
 });
 
 test("Validate one username Field of schema with options message true with 3 should be 'string'", () => {
-  expect(User.username.validate(3, { message: true })).toBe("string");
+  expect(User.username.validate(3, { verbose: true })).toBe("string");
 });
 
 test("Validate one Field of nested schema with no options with valide data should be true", () => {
@@ -128,8 +128,8 @@ test("Validate one Field of nested schema with no options with notValide data sh
   expect(Client.address.zipCode.validate(20)).toBe(false);
 });
 
-test("Validate one Field of nested schema with message options and not valide data should be 'minLength'", () => {
-  expect(Client.address.zipCode.validate(20, { message: true })).toBe(
+test("Validate one Field of nested schema with verbose options and not valide data should be 'minLength'", () => {
+  expect(Client.address.zipCode.validate(20, { verbose: true })).toBe(
     "between"
   );
 });
