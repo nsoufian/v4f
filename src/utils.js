@@ -37,17 +37,16 @@ export const rulesWrapper = rules => Context => {
   return wrappedContext;
 };
 
+const isCrossArg = value => isArray(value) && value[0][0] === "#";
+
 export const resolveArgs = (args, values) => {
-  const newArgs = [];
+  let newArgs = [];
   args.forEach(arg => {
-    if (arg instanceof Array && arg[0][0] === "#") {
-      let value = getValue(arg[0].slice(1), values);
-      if (arg.length > 1) {
-        value = arg[1](value);
-      }
-      newArgs.push(value);
+    if (isCrossArg(arg)) {
+      const value = getValue(arg[0].slice(1), values);
+      newArgs = [...newArgs, arg.length > 1 ? arg[1](value) : value];
     } else {
-      newArgs.push(arg);
+      newArgs = [...newArgs, arg];
     }
   });
   return newArgs;
