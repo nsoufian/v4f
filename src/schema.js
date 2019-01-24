@@ -15,7 +15,7 @@ const msgValidate = (schema, values) => {
   const errors = {};
   Object.entries(schema).forEach(([name, rule]) => {
     const result = rule.validate(values[name], {
-      message: true,
+      verbose: true,
       values
     });
     if (result !== true) errors[name] = result;
@@ -26,8 +26,8 @@ const msgValidate = (schema, values) => {
 export default schema => {
   function Validator() {}
 
-  function validate(values, { message = false } = {}) {
-    if (message) {
+  function validate(values, { verbose = false } = {}) {
+    if (verbose) {
       return msgValidate(schema, values);
     }
     return booleanValidate(schema, values);

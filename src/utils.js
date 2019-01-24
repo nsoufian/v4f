@@ -14,19 +14,3 @@ export const getNestedValue = (name, values) => {
   for (let i = 1; i < names.length; i += 1) value = value[names[i]];
   return value;
 };
-
-export const resolveArgs = (args, values) => {
-  const newArgs = [];
-  args.forEach(arg => {
-    if (arg instanceof Array && arg[0][0] === "#") {
-      let value = getNestedValue(arg[0].slice(1), values);
-      if (arg.length > 1) {
-        value = arg[1](value);
-      }
-      newArgs.push(value);
-    } else {
-      newArgs.push(arg);
-    }
-  });
-  return newArgs;
-};
