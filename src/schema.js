@@ -1,6 +1,4 @@
-import { isEmpty } from "./utils";
-
-const booleanValidate = (schema, values) => {
+const validation = (schema, values) => {
   const rules = Object.entries(schema);
   for (let i = 0; i < rules.length; i += 1) {
     const [name, rule] = rules[i];
@@ -11,33 +9,33 @@ const booleanValidate = (schema, values) => {
   return true;
 };
 
-const msgValidate = (schema, values) => {
-  const errors = {};
+const verboseValidation = (schema, values) => {
+  let errors = null;
   Object.entries(schema).forEach(([name, rule]) => {
     const result = rule.validate(values[name], {
       verbose: true,
       values
     });
-    if (result !== true) errors[name] = result;
+    if (result !== true) {
+      errors = { ...errors, [name]: result };
+    }
   });
-  return isEmpty(errors) ? null : errors;
+  return errors;
 };
 
-export default schema => {
-  function Validator() {}
+export default (rules, options = { verbose: false }) => {
+  function Schema() {}
 
-  function validate(values, { verbose = false } = {}) {
-    if (verbose) {
-      return msgValidate(schema, values);
-    }
-    return booleanValidate(schema, values);
-  }
-
-  Object.entries(schema).forEach(([name, rule]) => {
-    Validator.prototype[name] = rule;
+  Object.entries(rules).forEach(([name, rule]) => {
+    Schema.prototype[name] = rule;
   });
 
-  Validator.prototype.validate = validate;
+  Schema.prototype.validate = (values, { verbose = options.verbose } = {}) => {
+    if (verbose) {
+      return verboseValidation(rules, values);
+    }
+    return validation(rules, values);
+  };
 
-  return new Validator();
+  return new Schema();
 };

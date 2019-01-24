@@ -1,49 +1,41 @@
-import { execute, getNestedValue } from "./utils";
+import { execute, getValue, isObject, isArray } from "./utils";
 
-const validateMulti = (name, rule, values) => {
-  let isPassed = true;
-  for (let j = 0; j < name.length && isPassed; j += 1) {
-    if (rule.validate(getNestedValue(name[j], values)) === false) {
-      isPassed = false;
+const validation = (name, rule, values) => {
+  if (!isArray(name)) {
+    return rule.validate(getValue(name, values));
+  }
+  for (let i = 0; i < name.length; i += 1) {
+    if (!rule.validate(getValue(name[i], values))) {
+      return false;
     }
   }
-  return isPassed;
+  return true;
 };
 
 class When {
-  #rules = [];
+  #rules = null;
 
-  when(name, rule) {
-    this.#rules.push({ name, rule });
-    return this;
+  constructor(rules = []) {
+    this.#rules = rules;
   }
 
   end(name, rule) {
-    this.#rules.push("&&");
-    this.#rules.push({ name, rule });
-    return this;
+    return new When([...this.#rules, "&&", { name, rule }]);
   }
 
   or(name, rule) {
-    this.#rules.push("||");
-    this.#rules.push({ name, rule });
-    return this;
+    return new When([...this.#rules, "||", { name, rule }]);
   }
 
   validate(values) {
-    const result = [];
-    for (let i = 0; i < this.#rules.length; i += 1) {
-      if (typeof this.#rules[i] === "object") {
-        const { name, rule } = this.#rules[i];
-        if (name instanceof Array) {
-          result.push(validateMulti(name, rule, values));
-        } else {
-          result.push(rule.validate(getNestedValue(name, values)));
-        }
+    let result = [];
+    this.#rules.forEach(rule => {
+      if (isObject(rule)) {
+        result = [...result, validation(rule.name, rule.rule, values)];
       } else {
-        result.push(this.#rules[i]);
+        result = [...result, rule];
       }
-    }
+    });
     return execute(result);
   }
 }
