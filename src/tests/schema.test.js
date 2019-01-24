@@ -70,7 +70,7 @@ test("Validate Schema with message options and not valide data should be object.
   expect(User.validate(notValideData, { verbose: true })).toEqual({
     username: "minLength",
     email: "string",
-    url: "string",
+    url: "required",
     isAdmin: "boolean"
   });
 });
@@ -95,7 +95,7 @@ test("Validate nested schema with options verbose true with not valide data shou
     )
   ).toEqual({
     name: "string",
-    address: { country: "string", zipCode: "between" }
+    address: { country: "required", zipCode: "between" }
   });
 });
 
