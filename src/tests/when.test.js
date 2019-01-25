@@ -138,3 +138,85 @@ test("User Schema with username user and isAdmin true and isActive true and no u
     })
   ).toBe(false);
 });
+
+const Account = Schema(
+  {
+    username: Field()
+      .string()
+      .notEmpty()
+      .required(),
+    password: Field()
+      .string()
+      .notEmpty()
+      .required(),
+    isAdmin: Field()
+      .boolean()
+      .required(),
+    panel: Field()
+      .string()
+      .url()
+      .required({
+        apply: When(
+          "isAdmin",
+          Field()
+            .boolean()
+            .truthy()
+        )
+      })
+  },
+  { strict: true }
+);
+
+test("Strict mode validate with valide data should be true", () => {
+  expect(
+    Account.validate({
+      username: "user",
+      password: "pass",
+      isAdmin: true,
+      panel: "http://domain.com/panel"
+    })
+  ).toBe(true);
+});
+
+test("Strict mode validate with not valide data should be false", () => {
+  expect(
+    Account.validate({
+      username: "user",
+      password: "pass",
+      isAdmin: true,
+      panel: ""
+    })
+  ).toBe(false);
+});
+
+test("Strict mode validate with not valide data should be true", () => {
+  expect(
+    Account.validate({
+      username: "user",
+      password: "pass",
+      isAdmin: false
+    })
+  ).toBe(true);
+});
+
+test("Strict mode validate with valide data should be true", () => {
+  expect(
+    Account.validate({
+      username: "user",
+      password: "pass",
+      isAdmin: false,
+      panel: "http://google.com"
+    })
+  ).toBe(true);
+});
+
+test("Strict mode validate with valide data should be false", () => {
+  expect(
+    Account.validate({
+      username: "user",
+      password: "pass",
+      isAdmin: false,
+      panel: "lsdif"
+    })
+  ).toBe(false);
+});

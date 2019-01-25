@@ -2,7 +2,7 @@ import { Field } from "../index";
 
 const email = Field()
   .string()
-  .optional();
+  .required({ not: true });
 
 test("Validate Optional string Field with value null should be true", () => {
   expect(email.validate(null)).toBe(true);
@@ -30,7 +30,7 @@ test("Validate Optional string Field with value not string should be false", () 
 
 const bool = Field()
   .boolean()
-  .optional();
+  .required({ not: true });
 
 test("Validate Optional Field with value not boolean should be false", () => {
   expect(bool.validate("this is string")).toBe(false);
@@ -42,7 +42,7 @@ test("Validate Optional Field with value true should be true", () => {
 
 const address = Field()
   .object()
-  .optional();
+  .required({ not: true });
 
 test("Validate Optional object Field with value null should be true", () => {
   expect(address.validate(null)).toBe(true);
