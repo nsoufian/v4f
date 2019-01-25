@@ -18,3 +18,15 @@ export const notEquals = (equalsValue, value) =>
     : value !== equalsValue;
 
 export const optional = value => value === null || value === undefined;
+
+export const valueIn = (set, value) => {
+  const data = Object.entries(set).map(element => element[1]);
+  for (let i = 0; i < data.length; i += 1) {
+    if (data[i] === value) {
+      return true;
+    }
+  }
+  return false;
+};
+
+export const notIn = (set, value) => !valueIn(set, value);
