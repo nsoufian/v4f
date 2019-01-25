@@ -53,8 +53,8 @@ test("Equals rule with values 3,3 should be true", () => {
   expect(equals(3, 3)).toBe(true);
 });
 
-test("Equals rule with values 3,'3' should be false", () => {
-  expect(equals(3, "3")).toBe(false);
+test("Equals rule with values 3,'3' should be true", () => {
+  expect(equals(3, "3")).toBe(true);
 });
 
 test("Equals rule with values true,true should be true", () => {
