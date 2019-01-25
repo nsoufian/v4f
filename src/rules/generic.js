@@ -12,11 +12,6 @@ export const equals = (equalsValue, value) =>
     ? isObjectsEquals(value, equalsValue)
     : value === equalsValue;
 
-export const notEquals = (equalsValue, value) =>
-  typeof value === "object" && typeof equalsValue === "object"
-    ? !isObjectsEquals(value, equalsValue)
-    : value !== equalsValue;
-
 export const optional = value => value === null || value === undefined;
 
 export const valueIn = (set, value) => {
@@ -28,5 +23,3 @@ export const valueIn = (set, value) => {
   }
   return false;
 };
-
-export const notIn = (set, value) => !valueIn(set, value);

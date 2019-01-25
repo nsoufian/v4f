@@ -14,7 +14,7 @@ const Server = Schema({
         "user",
         Field()
           .string()
-          .notEquals("root")
+          .equals("root", { not: true })
       )
     })
     .falsy({

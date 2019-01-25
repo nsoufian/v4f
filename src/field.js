@@ -21,15 +21,19 @@ class Field {
         name,
         rule,
         args,
-        options: { apply, message }
+        options: { apply, message, not }
       } = this.#rules[i];
 
       const isRuleSuccess = rule(...resolveArgs(args, values), value);
       if (name === "optional") {
-        if (isFail(!isRuleSuccess, apply, values)) {
+        if (
+          isFail(not === true ? isRuleSuccess : !isRuleSuccess, apply, values)
+        ) {
           break;
         }
-      } else if (isFail(isRuleSuccess, apply, values)) {
+      } else if (
+        isFail(not === true ? !isRuleSuccess : isRuleSuccess, apply, values)
+      ) {
         return verbose === true ? message : false;
       }
     }
