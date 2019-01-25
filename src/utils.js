@@ -20,14 +20,8 @@ export const getValue = (name, values) => {
 };
 
 const getRules = (name, rules, rule) => {
-  if (
-    name === "optional" ||
-    (name === "required" && rules[0].name !== "optional")
-  ) {
-    return [rule, ...rules];
-  }
   if (name === "required") {
-    return [rules[0], rule, ...rules.slice(1)];
+    return [rule, ...rules];
   }
   return [...rules, rule];
 };

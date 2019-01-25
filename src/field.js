@@ -29,20 +29,20 @@ class Field {
 
       const isRuleSuccess = rule(...resolveArgs(args, values), value);
 
-      const validation = !strict ? isFail : isFailStrict;
+      const validationFail = strict ? isFailStrict : isFail;
 
-      if (name === "optional") {
+      // Check if rule required in stats of optional
+      if (name === "required" && (not || (strict && apply))) {
         if (
-          validation(
-            not === true ? isRuleSuccess : !isRuleSuccess,
-            apply,
-            values
-          )
+          (!isRuleSuccess && not) ||
+          (apply && !apply.validate(values) && !isRuleSuccess)
         ) {
           break;
+        } else if (apply && !isRuleSuccess) {
+          return verbose === true ? message : false;
         }
       } else if (
-        validation(not === true ? !isRuleSuccess : isRuleSuccess, apply, values)
+        validationFail(not ? !isRuleSuccess : isRuleSuccess, apply, values)
       ) {
         return verbose === true ? message : false;
       }

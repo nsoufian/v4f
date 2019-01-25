@@ -11,9 +11,9 @@ export const equals = (equalsValue, value) =>
 export const empty = value =>
   value === "" || isObjectsEquals(value, []) || isEmpty(value);
 
-export const exact = (compair, value) => compair === value;
+export const notEmpty = value => !empty(value);
 
-export const optional = value => value === null || value === undefined;
+export const exact = (compair, value) => compair === value;
 
 export const inValues = (set, value) => {
   const data = Object.entries(set).map(element => element[1]);

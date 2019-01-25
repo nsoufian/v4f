@@ -31,10 +31,8 @@ export default (rules, options = { verbose: false, strict: false }) => {
     Schema.prototype[name] = rule;
   });
 
-  Schema.prototype.validate = (
-    values,
-    { verbose = options.verbose, strict = options.strict } = {}
-  ) => {
+  Schema.prototype.validate = (values, { verbose = options.verbose } = {}) => {
+    const { strict } = options;
     if (verbose) {
       return verboseValidation(rules, values, { strict });
     }
