@@ -1,31 +1,26 @@
 import { Field, Schema, When } from "../index";
 
-const Server = Schema({
-  host: Field()
-    .string()
-    .required(),
-  user: Field()
-    .string()
-    .required(),
-  sudo: Field()
-    .boolean()
-    .truthy({
-      apply: When(
-        "user",
-        Field()
-          .string()
-          .equals("root", { not: true })
-      )
-    })
-    .falsy({
-      apply: When(
-        "user",
-        Field()
-          .string()
-          .equals("root")
-      )
-    })
-});
+const Server = Schema(
+  {
+    host: Field()
+      .string()
+      .required(),
+    user: Field()
+      .string()
+      .required(),
+    sudo: Field()
+      .boolean()
+      .falsy({
+        apply: When(
+          "user",
+          Field()
+            .string()
+            .equals("root")
+        )
+      })
+  },
+  { strict: true }
+);
 
 test("Schema Server with user root and sudo false should be true", () => {
   expect(
@@ -139,8 +134,7 @@ test("User Schema with username user and isAdmin true and isActive true and no u
     User.validate({
       username: "admin",
       isAdmin: false,
-      isActive: true,
-      url: ""
+      isActive: true
     })
   ).toBe(false);
 });

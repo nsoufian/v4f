@@ -1,11 +1,6 @@
 import { isEmpty, isObjectsEquals } from "../utils";
 
-export const required = value =>
-  value !== "" &&
-  value !== null &&
-  value !== undefined &&
-  isEmpty(value) !== true &&
-  (value instanceof Array ? value.length !== 0 : true);
+export const required = value => value !== null && value !== undefined;
 
 export const equals = (equalsValue, value) =>
   typeof value === "object" && typeof equalsValue === "object"
@@ -14,7 +9,7 @@ export const equals = (equalsValue, value) =>
       value == equalsValue;
 
 export const empty = value =>
-  value === "" || isObjectsEquals(value, []) || isObjectsEquals(value, {});
+  value === "" || isObjectsEquals(value, []) || isEmpty(value);
 
 export const exact = (compair, value) => compair === value;
 
