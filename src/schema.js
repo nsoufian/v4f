@@ -9,23 +9,26 @@ const validation = (schema, values, options) => {
   return true;
 };
 
-const verboseValidation = (schema, values, options) => {
+const verboseValidation = (schema, values, bool, options) => {
   let errors = null;
   Object.entries(schema).forEach(([name, rule]) => {
     const result = rule.validate(values[name], {
-      verbose: true,
+      verbose: !bool,
       field: name,
       values,
       ...options
     });
-    if (result !== true) {
+    if (result !== true || bool) {
       errors = { ...errors, [name]: result };
     }
   });
   return errors;
 };
 
-export default (rules, options = { verbose: false, strict: true }) => {
+export default (
+  rules,
+  options = { verbose: false, strict: true, bool: false }
+) => {
   function Schema() {}
 
   Object.entries(rules).forEach(([name, rule]) => {
@@ -34,10 +37,14 @@ export default (rules, options = { verbose: false, strict: true }) => {
 
   Schema.prototype.validate = (
     values,
-    { verbose = options.verbose, strict = options.strict } = {}
+    {
+      verbose = options.verbose,
+      strict = options.strict,
+      bool = options.bool
+    } = {}
   ) => {
     if (verbose) {
-      return verboseValidation(rules, values, { strict });
+      return verboseValidation(rules, values, bool, { strict });
     }
     return validation(rules, values, { strict });
   };
