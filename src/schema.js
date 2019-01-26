@@ -1,3 +1,5 @@
+import { hasFalse } from "./utils";
+
 const validation = (schema, values, options) => {
   const rules = Object.entries(schema);
   for (let i = 0; i < rules.length; i += 1) {
@@ -27,7 +29,7 @@ const verboseValidation = (schema, values, bool, options) => {
 
 export default (
   rules,
-  options = { verbose: false, strict: true, bool: false }
+  options = { verbose: false, strict: true, bool: false, async: false }
 ) => {
   function Schema() {}
 
@@ -40,9 +42,33 @@ export default (
     {
       verbose = options.verbose,
       strict = options.strict,
-      bool = options.bool
+      bool = options.bool,
+      async = options.async
     } = {}
   ) => {
+    if (async) {
+      return new Promise((resolve, reject) => {
+        if (verbose) {
+          const result = verboseValidation(rules, values, bool, {
+            strict
+          });
+          if (bool) {
+            if (hasFalse(result)) {
+              reject(result);
+            } else {
+              resolve(values);
+            }
+          } else if (result === null) {
+            resolve(values);
+          }
+          reject(result);
+        } else if (validation(rules, values, { strict }) === true) {
+          resolve(values);
+        } else {
+          reject();
+        }
+      });
+    }
     if (verbose) {
       return verboseValidation(rules, values, bool, { strict });
     }
