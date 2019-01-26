@@ -1,26 +1,23 @@
 import { Field, Schema, When } from "../index";
 
-const Server = Schema(
-  {
-    host: Field()
-      .string()
-      .required(),
-    user: Field()
-      .string()
-      .required(),
-    sudo: Field()
-      .boolean()
-      .falsy({
-        apply: When(
-          "user",
-          Field()
-            .string()
-            .equals("root")
-        )
-      })
-  },
-  { strict: true }
-);
+const Server = Schema({
+  host: Field()
+    .string()
+    .required(),
+  user: Field()
+    .string()
+    .required(),
+  sudo: Field()
+    .boolean()
+    .falsy({
+      apply: When(
+        "user",
+        Field()
+          .string()
+          .equals("root")
+      )
+    })
+});
 
 test("Schema Server with user root and sudo false should be true", () => {
   expect(
@@ -157,7 +154,7 @@ const Account = Schema(
         )
       })
   },
-  { strict: true, verbose: true }
+  { verbose: true }
 );
 
 test("Strict mode validate with valide data should be true", () => {

@@ -19,24 +19,24 @@ export const getValue = (name, values) => {
   return value;
 };
 
-const getRules = (name, rules, rule) => {
-  if (name === "required") {
-    return [rule, ...rules];
-  }
-  return [...rules, rule];
-};
-
 export const rulesWrapper = rules => Context => {
   const wrappedContext = Context;
   Object.entries(rules).forEach(([name, rule]) => {
     wrappedContext.prototype[name] = function(...args) {
+      const ruleObj = {
+        rule,
+        name,
+        args: args.slice(0, rule.length - 1),
+        options: {
+          message: name,
+          not: false,
+          ...args[rule.length - 1]
+        }
+      };
       return new Context(
-        getRules(name, this._rules(), {
-          rule,
-          name,
-          args: args.slice(0, rule.length - 1),
-          options: !args[rule.length - 1] ? {} : args[rule.length - 1]
-        })
+        name === "required"
+          ? [ruleObj, ...this._rules()]
+          : [...this._rules(), ruleObj]
       );
     };
   });

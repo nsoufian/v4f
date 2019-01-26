@@ -24,15 +24,17 @@ const verboseValidation = (schema, values, options) => {
   return errors;
 };
 
-export default (rules, options = { verbose: false, strict: false }) => {
+export default (rules, options = { verbose: false, strict: true }) => {
   function Schema() {}
 
   Object.entries(rules).forEach(([name, rule]) => {
     Schema.prototype[name] = rule;
   });
 
-  Schema.prototype.validate = (values, { verbose = options.verbose } = {}) => {
-    const { strict } = options;
+  Schema.prototype.validate = (
+    values,
+    { verbose = options.verbose, strict = options.strict } = {}
+  ) => {
     if (verbose) {
       return verboseValidation(rules, values, { strict });
     }

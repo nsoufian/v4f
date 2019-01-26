@@ -18,7 +18,7 @@ class Field {
     return this.#rules;
   }
 
-  validate(value, { verbose = false, values = {}, strict = false } = {}) {
+  validate(value, { verbose = false, values = {}, strict = true } = {}) {
     for (let i = 0; i < this.#rules.length; i += 1) {
       const {
         name,
