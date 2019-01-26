@@ -12,6 +12,13 @@ export const isArray = value => value instanceof Array;
 
 export const execute = value => run(value.join(" "));
 
+export const isOptionalSuccess = (value, type) =>
+  value === undefined ||
+  value === null ||
+  (value === "" && type === "string") ||
+  (isObjectsEquals(value, []) && type === "array") ||
+  (isEmpty(value) && type === "object");
+
 export const getValue = (name, values) => {
   const names = name.split(".");
   let value = values[names[0]];

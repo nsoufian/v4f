@@ -1,19 +1,18 @@
 import allRules from "./rules/index";
-import { rulesWrapper, resolveArgs } from "./utils";
+import { rulesWrapper, resolveArgs, isOptionalSuccess } from "./utils";
 
-const isFail = (isValide, apply, values) =>
-  (!apply && !isValide) || (apply && (apply.validate(values) && !isValide));
-
-const isFailStrict = (isValide, apply, values) =>
-  (!apply && !isValide) || (apply && apply.validate(values) !== isValide);
+const isFail = (isRuleSuccess, apply, strict, values) =>
+  strict
+    ? apply && apply.validate(values) !== isRuleSuccess
+    : apply && apply.validate(values) && !isRuleSuccess;
 
 class Field {
   #rules = null;
 
   #not = null;
 
-  constructor(initRules = [], not = false) {
-    this.#rules = initRules;
+  constructor(rules = [], not = false) {
+    this.#rules = rules;
     this.#not = not;
   }
 
@@ -35,22 +34,20 @@ class Field {
         options: { apply, message }
       } = this.#rules[i];
 
-      const isRuleSuccess = rule(...resolveArgs(args, values), value);
+      const isRuleSuccess = not !== rule(...resolveArgs(args, values), value);
 
-      const validationFail = strict ? isFailStrict : isFail;
+      const isOptionalRule =
+        name === "required" &&
+        (not || (strict && apply && !apply.validate(values)));
 
-      // Check if rule required in stats of optional
-      if (name === "required" && (not || (strict && apply))) {
-        if (
-          (!isRuleSuccess && not) ||
-          (apply && !apply.validate(values) && !isRuleSuccess)
-        ) {
+      if (isOptionalRule) {
+        if (isOptionalSuccess(value, this.#rules[i + 1].name)) {
           break;
-        } else if (apply && !isRuleSuccess) {
-          return verbose === true ? message : false;
         }
       } else if (
-        validationFail(not ? !isRuleSuccess : isRuleSuccess, apply, values)
+        (!isRuleSuccess && !apply) ||
+        (name === "required" && !not && strict && apply && !isRuleSuccess) ||
+        isFail(isRuleSuccess, apply, strict, values)
       ) {
         return verbose === true ? message : false;
       }

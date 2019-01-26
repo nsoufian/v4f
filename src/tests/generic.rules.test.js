@@ -21,16 +21,16 @@ test("Required rule with value {a: 2} should be true", () => {
   expect(required({ a: 2 })).toBe(true);
 });
 
-test("Required rule with empty string should be true", () => {
-  expect(required("")).toBe(true);
+test("Required rule with empty string should be false", () => {
+  expect(required("")).toBe(false);
 });
 
-test("Required rule with empty array should be true", () => {
-  expect(required([])).toBe(true);
+test("Required rule with empty array should be false", () => {
+  expect(required([])).toBe(false);
 });
 
-test("Required rule with empty object should be true", () => {
-  expect(required({})).toBe(true);
+test("Required rule with empty object should be false", () => {
+  expect(required({})).toBe(false);
 });
 
 test("Required rule with value undefined should be false", () => {
