@@ -63,3 +63,10 @@ export const resolveArgs = (args, values) => {
   });
   return newArgs;
 };
+
+export const hasFalse = obj => {
+  const values = Object.entries(obj).map(([, value]) => value);
+  for (let i = 0; i < values.length; i += 1)
+    if (values[i] === false) return true;
+  return false;
+};
