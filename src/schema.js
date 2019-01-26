@@ -14,6 +14,7 @@ const verboseValidation = (schema, values, options) => {
   Object.entries(schema).forEach(([name, rule]) => {
     const result = rule.validate(values[name], {
       verbose: true,
+      field: name,
       values,
       ...options
     });

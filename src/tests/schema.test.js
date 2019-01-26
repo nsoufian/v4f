@@ -43,7 +43,7 @@ const Address = Schema({
     .required({ message: "required" }),
   zipCode: Field()
     .number({ message: "number" })
-    .between(75000, 90000, { message: "between" })
+    .between(75000, 90000, { message: "between %{value} %{field}" })
     .required({ message: "required" })
 });
 
@@ -95,7 +95,7 @@ test("Validate nested schema with options verbose true with not valide data shou
     )
   ).toEqual({
     name: "string",
-    address: { country: "required", zipCode: "between" }
+    address: { country: "required", zipCode: "between 750 zipCode" }
   });
 });
 
@@ -130,7 +130,7 @@ test("Validate one Field of nested schema with no options with notValide data sh
 
 test("Validate one Field of nested schema with verbose options and not valide data should be 'minLength'", () => {
   expect(Client.address.zipCode.validate(20, { verbose: true })).toBe(
-    "between"
+    "between 20"
   );
 });
 
