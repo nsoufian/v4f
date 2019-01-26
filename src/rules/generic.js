@@ -8,16 +8,10 @@ export const equals = (equalsValue, value) =>
     : // eslint-disable-next-line
 		  value == equalsValue;
 
-export const notEquals = (equalsValue, value) => !equals(equalsValue, value);
-
 export const empty = value =>
   value === "" || isObjectsEquals(value, []) || isEmpty(value);
 
-export const notEmpty = value => !empty(value);
-
 export const exact = (compair, value) => compair === value;
-
-export const notExact = (compair, value) => !exact(compair, value);
 
 export const inValues = (set, value) => {
   const data = Object.entries(set).map(element => element[1]);
@@ -28,5 +22,3 @@ export const inValues = (set, value) => {
   }
   return false;
 };
-
-export const notIn = (set, value) => !inValues(set, value);

@@ -143,7 +143,7 @@ const Account = Schema({
     .required(),
   password: Field()
     .string()
-    .equals(["#username"], { not: true })
+    .not.equals(["#username"])
     .required(),
   passwordConfirmation: Field()
     .string()

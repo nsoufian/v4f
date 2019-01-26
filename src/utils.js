@@ -20,27 +20,26 @@ export const getValue = (name, values) => {
 };
 
 export const rulesWrapper = rules => Context => {
-  const wrappedContext = Context;
+  const Field = Context;
   Object.entries(rules).forEach(([name, rule]) => {
-    wrappedContext.prototype[name] = function(...args) {
+    Field.prototype[name] = function(...args) {
+      const [allRules, not] = this._clone();
       const ruleObj = {
         rule,
         name,
+        not,
         args: args.slice(0, rule.length - 1),
         options: {
           message: name,
-          not: false,
           ...args[rule.length - 1]
         }
       };
       return new Context(
-        name === "required"
-          ? [ruleObj, ...this._rules()]
-          : [...this._rules(), ruleObj]
+        name === "required" ? [ruleObj, ...allRules] : [...allRules, ruleObj]
       );
     };
   });
-  return wrappedContext;
+  return Field;
 };
 
 const isCrossArg = value => isArray(value) && value[0][0] === "#";

@@ -10,12 +10,19 @@ const isFailStrict = (isValide, apply, values) =>
 class Field {
   #rules = null;
 
-  constructor(initRules = []) {
+  #not = null;
+
+  constructor(initRules = [], not = false) {
     this.#rules = initRules;
+    this.#not = not;
   }
 
-  _rules() {
-    return this.#rules;
+  _clone() {
+    return [this.#rules, this.#not];
+  }
+
+  get not() {
+    return new Field([...this.#rules], true);
   }
 
   validate(value, { verbose = false, values = {}, strict = true } = {}) {
@@ -24,7 +31,8 @@ class Field {
         name,
         rule,
         args,
-        options: { apply, message, not }
+        not,
+        options: { apply, message }
       } = this.#rules[i];
 
       const isRuleSuccess = rule(...resolveArgs(args, values), value);

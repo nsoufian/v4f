@@ -11,7 +11,7 @@ const Server = Schema({
     .boolean()
     .falsy({
       apply: When(
-        "user",
+        "#user",
         Field()
           .string()
           .equals("root")
@@ -73,19 +73,19 @@ const User = Schema({
     .string()
     .required({
       apply: When(
-        ["isAdmin", "isActive"],
+        ["#isAdmin", "#isActive"],
         Field()
           .boolean()
           .truthy()
       )
         .or(
-          "username",
+          "#username",
           Field()
             .string()
             .equals("admin")
         )
         .end(
-          "isActive",
+          "#isActive",
           Field()
             .boolean()
             .truthy()
@@ -147,7 +147,7 @@ const Account = Schema(
       .required({
         message: "required",
         apply: When(
-          "isAdmin",
+          "#isAdmin",
           Field()
             .boolean()
             .truthy()
