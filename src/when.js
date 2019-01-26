@@ -2,10 +2,10 @@ import { execute, getValue, isObject, isArray } from "./utils";
 
 const validation = (name, rule, values) => {
   if (!isArray(name)) {
-    return rule.validate(getValue(name, values));
+    return rule.validate(getValue(name.slice(1), values));
   }
   for (let i = 0; i < name.length; i += 1) {
-    if (!rule.validate(getValue(name[i], values))) {
+    if (!rule.validate(getValue(name[i].slice(1), values))) {
       return false;
     }
   }

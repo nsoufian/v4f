@@ -1,4 +1,4 @@
-import { endsWith, startsWith, string, pattern } from "../rules/string";
+import { last, first, string, pattern } from "../rules/string";
 
 // String rule tests
 
@@ -22,24 +22,24 @@ test("String rule with value ['string'] should be false ", () => {
   expect(string(["string"])).toBe(false);
 });
 
-// startsWith rule tests
+// first rule tests
 
-test("StartsWith rule with start 'abc' and value 'abcdf' should be true", () => {
-  expect(startsWith("abc", "abcd")).toBe(true);
+test("First rule with start 'abc' and value 'abcdf' should be true", () => {
+  expect(first("abc", "abcd")).toBe(true);
 });
 
-test("StartsWith rule with start 'abc' and value 'fdcab' should be true", () => {
-  expect(startsWith("abc", "fdcab")).toBe(false);
+test("First rule with start 'abc' and value 'fdcab' should be true", () => {
+  expect(first("abc", "fdcab")).toBe(false);
 });
 
-// endsWith rule test
+// last rule test
 
-test("StartsWith rule with end 'abc' and value 'fdabc' should be true", () => {
-  expect(endsWith("abc", "fdabc")).toBe(true);
+test("Last rule with end 'abc' and value 'fdabc' should be true", () => {
+  expect(last("abc", "fdabc")).toBe(true);
 });
 
-test("StartsWith rule with end 'abc' and value 'abcdf' should be true", () => {
-  expect(endsWith("abc", "abcdf")).toBe(false);
+test("Last rule with end 'abc' and value 'abcdf' should be true", () => {
+  expect(last("abc", "abcdf")).toBe(false);
 });
 
 test("Pattern rule with ^abc$ and value abc should be true", () => {

@@ -9,17 +9,9 @@ const Server = Schema({
     .required(),
   sudo: Field()
     .boolean()
-    .truthy({
-      apply: When(
-        "user",
-        Field()
-          .string()
-          .notEquals("root")
-      )
-    })
     .falsy({
       apply: When(
-        "user",
+        "#user",
         Field()
           .string()
           .equals("root")
@@ -81,19 +73,19 @@ const User = Schema({
     .string()
     .required({
       apply: When(
-        ["isAdmin", "isActive"],
+        ["#isAdmin", "#isActive"],
         Field()
           .boolean()
           .truthy()
       )
         .or(
-          "username",
+          "#username",
           Field()
             .string()
             .equals("admin")
         )
         .end(
-          "isActive",
+          "#isActive",
           Field()
             .boolean()
             .truthy()
@@ -139,8 +131,80 @@ test("User Schema with username user and isAdmin true and isActive true and no u
     User.validate({
       username: "admin",
       isAdmin: false,
-      isActive: true,
-      url: ""
+      isActive: true
     })
   ).toBe(false);
+});
+
+const Account = Schema(
+  {
+    isAdmin: Field()
+      .boolean()
+      .required(),
+    panel: Field()
+      .string({ message: "string" })
+      .url({ message: "url" })
+      .required({
+        message: "required",
+        apply: When(
+          "#isAdmin",
+          Field()
+            .boolean()
+            .truthy()
+        )
+      })
+  },
+  { verbose: true }
+);
+
+test("Strict mode validate with valide data should be true", () => {
+  expect(
+    Account.validate({
+      isAdmin: true,
+      panel: "http://domain.com/panel"
+    })
+  ).toBe(null);
+});
+
+test("Strict mode validate with not valide data should be true", () => {
+  expect(
+    Account.validate({
+      isAdmin: false
+    })
+  ).toEqual(null);
+});
+
+test("Strict mode validate with valide data should be true", () => {
+  expect(
+    Account.validate({
+      isAdmin: false,
+      panel: "http://google.com"
+    })
+  ).toBe(null);
+});
+
+test("Strict mode validate with not valide data should be false", () => {
+  expect(
+    Account.validate({
+      isAdmin: true
+    })
+  ).toEqual({ panel: "required" });
+});
+
+test("Strict mode validate with valide data should be false", () => {
+  expect(
+    Account.validate({
+      isAdmin: false,
+      panel: "badurl"
+    })
+  ).toEqual({ panel: "url" });
+});
+
+test("Strict mode validate with valide data should be false", () => {
+  expect(
+    Account.validate({
+      isAdmin: false,
+      panel: 8
+    })
+  ).toEqual({ panel: "string" });
 });
