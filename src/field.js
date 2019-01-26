@@ -6,6 +6,12 @@ const isFail = (isRuleSuccess, apply, strict, values) =>
     ? apply && apply.validate(values) !== isRuleSuccess
     : apply && apply.validate(values) && !isRuleSuccess;
 
+const messageTemplate = (message, value, field) =>
+  message
+    .replace("%{value}", value)
+    .replace("%{field}", field)
+    .trim();
+
 class Field {
   #rules = null;
 
@@ -24,7 +30,10 @@ class Field {
     return new Field([...this.#rules], true);
   }
 
-  validate(value, { verbose = false, values = {}, strict = true } = {}) {
+  validate(
+    value,
+    { verbose = false, values = {}, strict = true, field = "" } = {}
+  ) {
     for (let i = 0; i < this.#rules.length; i += 1) {
       const {
         name,
@@ -49,7 +58,9 @@ class Field {
         (name === "required" && !not && strict && apply && !isRuleSuccess) ||
         isFail(isRuleSuccess, apply, strict, values)
       ) {
-        return verbose === true ? message : false;
+        return verbose === true
+          ? messageTemplate(message, value, field)
+          : false;
       }
     }
     return true;
