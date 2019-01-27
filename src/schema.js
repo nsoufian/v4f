@@ -1,4 +1,5 @@
 import { hasFalse } from "./utils";
+import { Field } from "./field";
 
 const validation = (schema, values, options) => {
   const rules = Object.entries(schema);
@@ -15,8 +16,9 @@ const verboseValidation = (schema, values, bool, options) => {
   let errors = null;
   Object.entries(schema).forEach(([name, rule]) => {
     const result = rule.validate(values[name], {
-      verbose: !bool,
+      verbose: rule instanceof Field ? !bool : true,
       field: name,
+      bool,
       values,
       ...options
     });

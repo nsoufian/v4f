@@ -1,9 +1,6 @@
 import { Field, Schema, When } from "../index";
 
-const Server = Schema({
-  host: Field()
-    .string()
-    .required(),
+const StrictMode = Schema({
   user: Field()
     .string()
     .required(),
@@ -19,44 +16,103 @@ const Server = Schema({
     })
 });
 
-test("Schema Server with user root and sudo false should be true", () => {
+/**
+ * Test Schema and apply in default mode strict that reverse condition
+ */
+
+test("Schema Strict mode with user root and sudo false should be true", () => {
   expect(
-    Server.validate({
-      host: "192.168.2.2",
+    StrictMode.validate({
       user: "root",
       sudo: false
     })
   ).toBe(true);
 });
 
-test("Schema Server with user root and sudo true should be false", () => {
+test("Schema Strict mode with user admin and sudo true should be true", () => {
   expect(
-    Server.validate({
-      host: "192.168.2.2",
-      user: "root",
-      sudo: true
-    })
-  ).toBe(false);
-});
-
-test("Schema Server with user admin and sudo true should be true", () => {
-  expect(
-    Server.validate({
-      host: "192.168.2.2",
+    StrictMode.validate({
       user: "admin",
       sudo: true
     })
   ).toBe(true);
 });
 
-test("Schema Server with user admin and sudo false should be false", () => {
+test("Schema Strict mode with user root and sudo true should be false", () => {
   expect(
-    Server.validate({
-      host: "192.168.2.2",
+    StrictMode.validate({
+      user: "root",
+      sudo: true
+    })
+  ).toBe(false);
+});
+
+test("Schema Strict mode with user admin and sudo false should be false", () => {
+  expect(
+    StrictMode.validate({
       user: "admin",
       sudo: false
     })
   ).toBe(false);
+});
+
+const NoStrictMode = Schema(
+  {
+    user: Field()
+      .string()
+      .required(),
+    sudo: Field()
+      .boolean()
+      .falsy({
+        apply: When(
+          "#user",
+          Field()
+            .string()
+            .equals("root")
+        )
+      })
+  },
+  { strict: false }
+);
+
+/**
+ * Test Schema and apply in default mode strict that reverse condition
+ */
+
+test("Schema No Strict mode with user root and sudo false should be true", () => {
+  expect(
+    NoStrictMode.validate({
+      user: "root",
+      sudo: false
+    })
+  ).toBe(true);
+});
+
+test("Schema No Strict mode with user admin and sudo true should be true", () => {
+  expect(
+    NoStrictMode.validate({
+      user: "admin",
+      sudo: true
+    })
+  ).toBe(true);
+});
+
+test("Schema No Strict mode with user root and sudo true should be false", () => {
+  expect(
+    NoStrictMode.validate({
+      user: "root",
+      sudo: true
+    })
+  ).toBe(false);
+});
+
+test("Schema No Strict mode with user admin and sudo false should be true", () => {
+  expect(
+    NoStrictMode.validate({
+      user: "admin",
+      sudo: false
+    })
+  ).toBe(true);
 });
 
 const User = Schema({
@@ -98,8 +154,7 @@ test("User Schema with username admin and isAdmin false and isActive false shoul
     User.validate({
       username: "admin",
       isAdmin: false,
-      isActive: false,
-      url: ""
+      isActive: false
     })
   ).toBe(true);
 });
@@ -126,6 +181,16 @@ test("User Schema with username user and isAdmin true and isActive true should b
   ).toBe(true);
 });
 
+test("User Schema with username user and isAdmin true and isActive true should be false", () => {
+  expect(
+    User.validate({
+      username: "username",
+      isAdmin: true,
+      isActive: true
+    })
+  ).toBe(false);
+});
+
 test("User Schema with username user and isAdmin true and isActive true and no url should be false", () => {
   expect(
     User.validate({
@@ -136,16 +201,26 @@ test("User Schema with username user and isAdmin true and isActive true and no u
   ).toBe(false);
 });
 
+test("User Schema with username user and isAdmin true and isActive true and no url should be true", () => {
+  expect(
+    User.validate({
+      username: "admin",
+      isAdmin: false,
+      isActive: true,
+      url: "http://badom.com"
+    })
+  ).toBe(true);
+});
+
 const Account = Schema(
   {
     isAdmin: Field()
       .boolean()
       .required(),
     panel: Field()
-      .string({ message: "string" })
-      .url({ message: "url" })
+      .string({})
+      .url({})
       .required({
-        message: "required",
         apply: When(
           "#isAdmin",
           Field()

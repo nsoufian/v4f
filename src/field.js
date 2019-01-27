@@ -12,7 +12,7 @@ const messageTemplate = (message, value, field) =>
     .replace("%{field}", field)
     .trim();
 
-class Field {
+export class Field {
   #rules = null;
 
   #not = null;

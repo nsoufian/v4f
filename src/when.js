@@ -15,7 +15,7 @@ const validation = (name, rule, values) => {
 class When {
   #rules = null;
 
-  constructor(rules = []) {
+  constructor(rules) {
     this.#rules = rules;
   }
 
