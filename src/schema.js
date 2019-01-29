@@ -1,7 +1,7 @@
 import { hasFalse } from "./utils";
 import { Field } from "./field";
 
-const validation = (schema, values = {}, options) => {
+const validation = (schema, values, options) => {
   const rules = Object.entries(schema);
   for (let i = 0; i < rules.length; i += 1) {
     const [name, rule] = rules[i];
@@ -12,7 +12,7 @@ const validation = (schema, values = {}, options) => {
   return true;
 };
 
-const verboseValidation = (schema, values = {}, bool, options) => {
+const verboseValidation = (schema, values, bool, options) => {
   let errors = null;
   Object.entries(schema).forEach(([name, rule]) => {
     const result = rule.validate(values[name], {
@@ -40,7 +40,7 @@ export default (
   });
 
   Schema.prototype.validate = (
-    values,
+    values = {},
     {
       verbose = options.verbose,
       strict = options.strict,

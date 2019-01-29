@@ -67,9 +67,6 @@ export const resolveArgs = (args, values) => {
 export const hasFalse = obj => {
   const values = Object.entries(obj).map(([, value]) => value);
   for (let i = 0; i < values.length; i += 1) {
-    if (typeof values[i] === "object" && hasFalse(values[i])) {
-      return true;
-    }
     if (values[i] === false) return true;
   }
   return false;

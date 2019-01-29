@@ -16,6 +16,7 @@ describe("Validate Schema, Field a string should equals abc ,and b boolean both 
     invalid: [
       [{ a: "abc" }, {}, false],
       [{ a: "bad", b: true }, {}, false],
+      [undefined, {}, false],
       [{}, {}, false],
       [{ a: [], b: 2 }, {}, false],
       [{ a: "abc" }, { verbose: true }, { b: "required" }],
@@ -29,6 +30,7 @@ describe("Validate Schema, Field a string should equals abc ,and b boolean both 
         { a: false, b: true }
       ],
       [{}, { verbose: true, bool: true }, { a: false, b: false }],
+      [undefined, { verbose: true, bool: true }, { a: false, b: false }],
       [{ a: [], b: 2 }, { verbose: true, bool: true }, { a: false, b: false }]
     ]
   };
@@ -123,14 +125,14 @@ describe("Validate Nested Schema and Related field with callback, with Field a b
     ],
     invalid: [
       [{ a: false, b: { x: false } }, {}, false],
+      [{}, {}, false],
       [{ a: true, b: { x: true } }, { verbose: true }, { a: "equals" }],
       [
         { a: true, b: { x: true } },
         { verbose: true, bool: true },
         { a: false, b: { x: true } }
       ],
-      [{}, { verbose: true, bool: true }, { a: false, b: { x: false } }],
-      [{}, {}, false]
+      [{}, { verbose: true, bool: true }, { a: false, b: { x: false } }]
     ]
   };
   const rule = (data, options) =>
@@ -172,6 +174,11 @@ describe("Validate Nested Schema and Related field, with Field a boolean should 
     invalid: [
       [{ a: false, b: { x: false }, c: true }, {}, false],
       [
+        {},
+        { verbose: true },
+        { a: "required", b: { x: "required" }, c: "required" }
+      ],
+      [
         { a: true, b: { x: true }, c: false },
         { verbose: true },
         { a: "equals" }
@@ -183,6 +190,11 @@ describe("Validate Nested Schema and Related field, with Field a boolean should 
       ],
       [
         {},
+        { verbose: true, bool: true },
+        { a: false, b: { x: false }, c: false }
+      ],
+      [
+        undefined,
         { verbose: true, bool: true },
         { a: false, b: { x: false }, c: false }
       ]
