@@ -1,285 +1,230 @@
 import { Field, Schema, When } from "../index";
 
-const StrictMode = Schema({
-  user: Field()
-    .string()
-    .required(),
-  sudo: Field()
-    .boolean()
-    .falsy({
-      apply: When(
-        "#user",
-        Field()
-          .string()
-          .equals("root")
-      )
-    })
+describe("Validate apply in default Strict mode, contraint b field should be falsy when a truly", () => {
+  const values = {
+    valid: [{ a: true, b: false }, { a: false, b: true }],
+    invalid: [{ a: true, b: true }, { a: false, b: false }]
+  };
+
+  const rule = v =>
+    Schema({
+      a: Field()
+        .boolean()
+        .required(),
+      b: Field()
+        .boolean()
+        .falsy({
+          apply: When(
+            "#a",
+            Field()
+              .boolean()
+              .truthy()
+          )
+        })
+    }).validate(v);
+
+  values.valid.forEach(v => {
+    it(`Value : {a: ${v.a}, b: ${v.b} } , should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`Value : {a: ${v.a}, b: ${v.b} } , should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
+  });
 });
 
-/**
- * Test Schema and apply in default mode strict that reverse condition
- */
+describe("Validate apply in No Strict mode, contraint b field should be falsy when a truly", () => {
+  const values = {
+    valid: [
+      { a: true, b: false },
+      { a: false, b: true },
+      { a: false, b: false }
+    ],
+    invalid: [{ a: true, b: true }]
+  };
 
-test("Schema Strict mode with user root and sudo false should be true", () => {
-  expect(
-    StrictMode.validate({
-      user: "root",
-      sudo: false
-    })
-  ).toBe(true);
-});
-
-test("Schema Strict mode with user admin and sudo true should be true", () => {
-  expect(
-    StrictMode.validate({
-      user: "admin",
-      sudo: true
-    })
-  ).toBe(true);
-});
-
-test("Schema Strict mode with user root and sudo true should be false", () => {
-  expect(
-    StrictMode.validate({
-      user: "root",
-      sudo: true
-    })
-  ).toBe(false);
-});
-
-test("Schema Strict mode with user admin and sudo false should be false", () => {
-  expect(
-    StrictMode.validate({
-      user: "admin",
-      sudo: false
-    })
-  ).toBe(false);
-});
-
-const NoStrictMode = Schema(
-  {
-    user: Field()
-      .string()
-      .required(),
-    sudo: Field()
-      .boolean()
-      .falsy({
-        apply: When(
-          "#user",
-          Field()
-            .string()
-            .equals("root")
-        )
-      })
-  },
-  { strict: false }
-);
-
-/**
- * Test Schema and apply in default mode strict that reverse condition
- */
-
-test("Schema No Strict mode with user root and sudo false should be true", () => {
-  expect(
-    NoStrictMode.validate({
-      user: "root",
-      sudo: false
-    })
-  ).toBe(true);
-});
-
-test("Schema No Strict mode with user admin and sudo true should be true", () => {
-  expect(
-    NoStrictMode.validate({
-      user: "admin",
-      sudo: true
-    })
-  ).toBe(true);
-});
-
-test("Schema No Strict mode with user root and sudo true should be false", () => {
-  expect(
-    NoStrictMode.validate({
-      user: "root",
-      sudo: true
-    })
-  ).toBe(false);
-});
-
-test("Schema No Strict mode with user admin and sudo false should be true", () => {
-  expect(
-    NoStrictMode.validate({
-      user: "admin",
-      sudo: false
-    })
-  ).toBe(true);
-});
-
-const User = Schema({
-  username: Field()
-    .string()
-    .required(),
-  isAdmin: Field()
-    .boolean()
-    .required(),
-  isActive: Field()
-    .boolean()
-    .required(),
-  url: Field()
-    .string()
-    .required({
-      apply: When(
-        ["#isAdmin", "#isActive"],
-        Field()
+  const rule = v =>
+    Schema(
+      {
+        a: Field()
           .boolean()
-          .truthy()
-      )
-        .or(
-          "#username",
-          Field()
-            .string()
-            .equals("admin")
-        )
-        .end(
-          "#isActive",
-          Field()
-            .boolean()
-            .truthy()
-        )
-    })
+          .required(),
+        b: Field()
+          .boolean()
+          .falsy({
+            apply: When(
+              "#a",
+              Field()
+                .boolean()
+                .truthy()
+            )
+          })
+      },
+      { strict: false }
+    ).validate(v);
+
+  values.valid.forEach(v => {
+    it(`Value : {a: ${v.a}, b: ${v.b} } , should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`Value : {a: ${v.a}, b: ${v.b} } , should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
+  });
 });
 
-test("User Schema with username admin and isAdmin false and isActive false should be true", () => {
-  expect(
-    User.validate({
-      username: "admin",
-      isAdmin: false,
-      isActive: false
-    })
-  ).toBe(true);
+describe("Validate Apply with With multiple field `END` , contraint c should be true when a and b false", () => {
+  const values = {
+    valid: [
+      { a: true, b: true, c: false },
+      { a: true, b: false, c: false },
+      { a: false, b: false, c: true }
+    ],
+    invalid: [
+      { a: true, b: true, c: true },
+      { a: true, b: false, c: true },
+      { a: false, b: false, c: false }
+    ]
+  };
+  const ruleArray = v =>
+    Schema({
+      a: Field().boolean(),
+      b: Field().boolean(),
+      c: Field()
+        .boolean()
+        .truthy({
+          apply: When(
+            ["#a", "#b"],
+            Field()
+              .boolean()
+              .falsy()
+          )
+        })
+    }).validate(v);
+
+  const ruleEnd = v =>
+    Schema({
+      a: Field().boolean(),
+      b: Field().boolean(),
+      c: Field()
+        .boolean()
+        .truthy({
+          apply: When(
+            "#a",
+            Field()
+              .boolean()
+              .falsy()
+          ).end(
+            "#b",
+            Field()
+              .boolean()
+              .falsy()
+          )
+        })
+    }).validate(v);
+
+  values.valid.forEach(v => {
+    it(`Value : {a: ${v.a}, b: ${v.b}, c: ${v.c} } , should be true`, () => {
+      expect(ruleArray(v)).toBe(true);
+      expect(ruleEnd(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`Value : {a: ${v.a}, b: ${v.b}, c: ${v.c} } , should be false`, () => {
+      expect(ruleArray(v)).toBe(false);
+      expect(ruleEnd(v)).toBe(false);
+    });
+  });
 });
 
-test("User Schema with username user and isAdmin false and isActive false should be true", () => {
-  expect(
-    User.validate({
-      username: "username",
-      isAdmin: false,
-      isActive: false,
-      url: "http://badom"
-    })
-  ).toBe(true);
+describe("Validate Apply with With `OR` , contraint c should be true when a or b false", () => {
+  const values = {
+    valid: [
+      { a: true, b: true, c: false },
+      { a: true, b: false, c: true },
+      { a: false, b: false, c: true }
+    ],
+    invalid: [
+      { a: true, b: true, c: true },
+      { a: true, b: false, c: false },
+      { a: false, b: false, c: false }
+    ]
+  };
+  const rule = v =>
+    Schema({
+      a: Field().boolean(),
+      b: Field().boolean(),
+      c: Field()
+        .boolean()
+        .truthy({
+          apply: When(
+            "#a",
+            Field()
+              .boolean()
+              .falsy()
+          ).or(
+            "#b",
+            Field()
+              .boolean()
+              .falsy()
+          )
+        })
+    }).validate(v);
+
+  values.valid.forEach(v => {
+    it(`Value : {a: ${v.a}, b: ${v.b}, c: ${v.c} } , should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`Value : {a: ${v.a}, b: ${v.b}, c: ${v.c} } , should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
+  });
 });
 
-test("User Schema with username user and isAdmin true and isActive true should be true", () => {
-  expect(
-    User.validate({
-      username: "username",
-      isAdmin: true,
-      isActive: true,
-      url: "http://badom"
-    })
-  ).toBe(true);
-});
+describe("Validate Required Rule with apply, contraint b should equals abc and required when a is truthy", () => {
+  const values = {
+    valid: [{ a: true, b: "abc" }, { a: false }, { a: false, b: "abc" }],
+    invalid: [
+      [{ a: true, b: "bad" }, "equals"],
+      [{ a: true }, "required"],
+      [{ a: false, b: "bad" }, "equals"]
+    ]
+  };
+  const rule = v =>
+    Schema(
+      {
+        a: Field()
+          .boolean()
+          .required(),
+        b: Field()
+          .string()
+          .equals("abc")
+          .required({
+            apply: When(
+              "#a",
+              Field()
+                .boolean()
+                .truthy()
+            )
+          })
+      },
+      { verbose: true }
+    ).validate(v);
 
-test("User Schema with username user and isAdmin true and isActive true should be false", () => {
-  expect(
-    User.validate({
-      username: "username",
-      isAdmin: true,
-      isActive: true
-    })
-  ).toBe(false);
-});
-
-test("User Schema with username user and isAdmin true and isActive true and no url should be false", () => {
-  expect(
-    User.validate({
-      username: "admin",
-      isAdmin: false,
-      isActive: true
-    })
-  ).toBe(false);
-});
-
-test("User Schema with username user and isAdmin true and isActive true and no url should be true", () => {
-  expect(
-    User.validate({
-      username: "admin",
-      isAdmin: false,
-      isActive: true,
-      url: "http://badom.com"
-    })
-  ).toBe(true);
-});
-
-const Account = Schema(
-  {
-    isAdmin: Field()
-      .boolean()
-      .required(),
-    panel: Field()
-      .string({})
-      .url({})
-      .required({
-        apply: When(
-          "#isAdmin",
-          Field()
-            .boolean()
-            .truthy()
-        )
-      })
-  },
-  { verbose: true }
-);
-
-test("Strict mode validate with valide data should be true", () => {
-  expect(
-    Account.validate({
-      isAdmin: true,
-      panel: "http://domain.com/panel"
-    })
-  ).toBe(null);
-});
-
-test("Strict mode validate with not valide data should be true", () => {
-  expect(
-    Account.validate({
-      isAdmin: false
-    })
-  ).toEqual(null);
-});
-
-test("Strict mode validate with valide data should be true", () => {
-  expect(
-    Account.validate({
-      isAdmin: false,
-      panel: "http://google.com"
-    })
-  ).toBe(null);
-});
-
-test("Strict mode validate with not valide data should be false", () => {
-  expect(
-    Account.validate({
-      isAdmin: true
-    })
-  ).toEqual({ panel: "required" });
-});
-
-test("Strict mode validate with valide data should be false", () => {
-  expect(
-    Account.validate({
-      isAdmin: false,
-      panel: "badurl"
-    })
-  ).toEqual({ panel: "url" });
-});
-
-test("Strict mode validate with valide data should be false", () => {
-  expect(
-    Account.validate({
-      isAdmin: false,
-      panel: 8
-    })
-  ).toEqual({ panel: "string" });
+  values.valid.forEach(v => {
+    it(`Value : {a: ${v.a}, b: ${v.b} } , should be true`, () => {
+      expect(rule(v)).toBe(null);
+    });
+  });
+  values.invalid.forEach(([v, reponce]) => {
+    it(`Value : {a: ${v.a}, b: ${v.b} } , should be false`, () => {
+      expect(rule(v)).toEqual({ b: reponce });
+    });
+  });
 });

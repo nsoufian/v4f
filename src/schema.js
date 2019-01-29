@@ -22,7 +22,7 @@ const verboseValidation = (schema, values, bool, options) => {
       values,
       ...options
     });
-    if (result !== true || bool) {
+    if ((result !== true && result !== null) || bool) {
       errors = { ...errors, [name]: result };
     }
   });
