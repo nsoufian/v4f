@@ -1,10 +1,10 @@
 import allRules from "./rules/index";
 import { rulesWrapper, resolveArgs, isOptionalSuccess } from "./utils";
 
-const isFail = (isRuleSuccess, apply, strict, values) =>
+const isFail = (isRuleSuccess, constraint, strict, values) =>
   strict
-    ? apply && apply.validate(values) !== isRuleSuccess
-    : apply && apply.validate(values) && !isRuleSuccess;
+    ? constraint && constraint.validate(values) !== isRuleSuccess
+    : constraint && constraint.validate(values) && !isRuleSuccess;
 
 const messageTemplate = (message, value, field) =>
   message
@@ -40,23 +40,25 @@ export class Field {
         rule,
         args,
         not,
-        options: { apply, message }
+        options: { constraint, message }
       } = this.#rules[i];
 
       const isRuleSuccess = not !== rule(...resolveArgs(args, values), value);
 
       const isOptionalRule =
         name === "required" &&
-        (not || (strict && apply && !apply.validate(values)));
+        (not || (strict && constraint && !constraint.validate(values)));
 
       if (isOptionalRule) {
         if (isOptionalSuccess(value, this.#rules[i + 1].name)) {
           break;
         }
       } else if (
-        (!isRuleSuccess && !apply) ||
-        (name === "required" && !not && strict && apply && !isRuleSuccess) ||
-        isFail(isRuleSuccess, apply, strict, values)
+        (!isRuleSuccess && !constraint) ||
+        (name === "required" &&
+          (!not && strict && constraint) &&
+          !isRuleSuccess) ||
+        isFail(isRuleSuccess, constraint, strict, values)
       ) {
         return verbose === true
           ? messageTemplate(message, value, field)

@@ -158,6 +158,28 @@ describe("Validate Nested Schema and Related field with callback, with Field a b
       expect(rule(data, options)).toEqual(result);
     });
   });
+  describe("Same Validation With Async Options", () => {
+    values.valid.forEach(([data, options]) => {
+      it(`Run validate with Data : ${json(data)}  ||  Options: ${json({
+        async: true,
+        ...options
+      })} || Should be resolved`, () =>
+        rule(data, { async: true, ...options }).then(result =>
+          expect(data).toEqual(result)
+        ));
+    });
+    values.invalid.forEach(([data, options, result]) => {
+      it(`Run validate with Data : ${json(data)}  ||  Options: ${json({
+        async: true,
+        ...options
+      })} || Should be Rejected`, () => {
+        expect.assertions(1);
+        return rule(data, { async: true, ...options }).catch(errors =>
+          expect(errors).toEqual(result === false ? undefined : result)
+        );
+      });
+    });
+  });
 });
 
 describe("Validate Nested Schema and Related field, with Field a boolean should equals to c", () => {
@@ -224,6 +246,28 @@ describe("Validate Nested Schema and Related field, with Field a boolean should 
       options
     )} || Should return ${json(result)}`, () => {
       expect(rule(data, options)).toEqual(result);
+    });
+  });
+  describe("Same Validation With Async Options", () => {
+    values.valid.forEach(([data, options]) => {
+      it(`Run validate with Data : ${json(data)}  ||  Options: ${json({
+        async: true,
+        ...options
+      })} || Should be resolved`, () =>
+        rule(data, { async: true, ...options }).then(result =>
+          expect(data).toEqual(result)
+        ));
+    });
+    values.invalid.forEach(([data, options, result]) => {
+      it(`Run validate with Data : ${json(data)}  ||  Options: ${json({
+        async: true,
+        ...options
+      })} || Should be Rejected`, () => {
+        expect.assertions(1);
+        return rule(data, { async: true, ...options }).catch(errors =>
+          expect(errors).toEqual(result === false ? undefined : result)
+        );
+      });
     });
   });
 });
