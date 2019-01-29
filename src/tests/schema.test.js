@@ -6,7 +6,12 @@ describe("Validate Schema, Field a string should equals abc ,and b boolean both 
   const values = {
     valid: [
       [{ a: "abc", b: true }, {}, true],
-      [{ a: "abc", b: true }, { verbose: true }, null]
+      [{ a: "abc", b: true }, { verbose: true }, null],
+      [
+        { a: "abc", b: true },
+        { verbose: true, bool: true },
+        { a: true, b: true }
+      ]
     ],
     invalid: [
       [{ a: "abc" }, {}, false],
@@ -56,7 +61,7 @@ describe("Validate Schema, Field a string should equals abc ,and b boolean both 
         async: true,
         ...options
       })} || Should be resolved`, () =>
-        rule(data, { async: true, options }).then(result =>
+        rule(data, { async: true, ...options }).then(result =>
           expect(data).toEqual(result)
         ));
     });
@@ -123,7 +128,9 @@ describe("Validate Nested Schema and Related field with callback, with Field a b
         { a: true, b: { x: true } },
         { verbose: true, bool: true },
         { a: false, b: { x: true } }
-      ]
+      ],
+      [{}, { verbose: true, bool: true }, { a: false, b: { x: false } }],
+      [{}, {}, false]
     ]
   };
   const rule = (data, options) =>
@@ -132,6 +139,64 @@ describe("Validate Nested Schema and Related field with callback, with Field a b
         a: Field()
           .boolean()
           .equals(["#b.x", value => !value])
+          .required(),
+        b: Schema({
+          x: Field()
+            .boolean()
+            .required()
+        })
+      },
+      options
+    ).validate(data);
+
+  [...values.valid, ...values.invalid].forEach(([data, options, result]) => {
+    it(`Run validate with Data : ${json(data)}  ||  Options: ${json(
+      options
+    )} || Should return ${json(result)}`, () => {
+      expect(rule(data, options)).toEqual(result);
+    });
+  });
+});
+
+describe("Validate Nested Schema and Related field, with Field a boolean should equals to c", () => {
+  const values = {
+    valid: [
+      [{ a: true, b: { x: false }, c: true }, {}, true],
+      [{ a: false, b: { x: true }, c: false }, { verbose: true }, null],
+      [
+        { a: true, b: { x: true }, c: true },
+        { verbose: true, bool: true },
+        { a: true, b: { x: true }, c: true }
+      ]
+    ],
+    invalid: [
+      [{ a: false, b: { x: false }, c: true }, {}, false],
+      [
+        { a: true, b: { x: true }, c: false },
+        { verbose: true },
+        { a: "equals" }
+      ],
+      [
+        { a: true, c: true },
+        { verbose: true, bool: true },
+        { a: true, b: { x: false }, c: true }
+      ],
+      [
+        {},
+        { verbose: true, bool: true },
+        { a: false, b: { x: false }, c: false }
+      ]
+    ]
+  };
+  const rule = (data, options) =>
+    Schema(
+      {
+        a: Field()
+          .boolean()
+          .equals(["#c"])
+          .required(),
+        c: Field()
+          .boolean()
           .required(),
         b: Schema({
           x: Field()
