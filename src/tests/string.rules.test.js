@@ -18,54 +18,85 @@ import {
 
 // String rule tests
 
-describe("String rule", () => {
-  test("String rule with value 'this is string' should be true ", () => {
-    expect(string("this is string")).toBe(true);
-  });
+describe("Validate String rule", () => {
+  const values = {
+    valid: ["this is string", "l"],
+    invalid: [22, { a: "l" }, true, ["string"]]
+  };
 
-  test("String rule with value 33 should be false ", () => {
-    expect(string(33)).toBe(false);
-  });
+  const rule = string;
 
-  test("String rule with value {a:3} should be false ", () => {
-    expect(string({ a: 3 })).toBe(false);
+  values.valid.forEach(v => {
+    it(`value : ${v} should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
   });
-
-  test("String rule with value true should be false ", () => {
-    expect(string(true)).toBe(false);
-  });
-
-  test("String rule with value ['string'] should be false ", () => {
-    expect(string(["string"])).toBe(false);
+  values.invalid.forEach(v => {
+    it(`value : ${v} should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
   });
 });
 
 // first rule tests
+describe("Validate First rule with value abc", () => {
+  const values = {
+    valid: ["abcd", "abcli"],
+    invalid: ["ablr", "abli", "ali"]
+  };
 
-test("First rule with start 'abc' and value 'abcdf' should be true", () => {
-  expect(first("abc", "abcd")).toBe(true);
+  const rule = v => first("abc", v);
+
+  values.valid.forEach(v => {
+    it(`value : ${v} should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`value : ${v} should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
+  });
 });
 
-test("First rule with start 'abc' and value 'fdcab' should be true", () => {
-  expect(first("abc", "fdcab")).toBe(false);
+describe("Validate Last rule with value rr", () => {
+  const values = {
+    valid: ["holarr", "toktarr"],
+    invalid: ["ablxr", "abli", "ali"]
+  };
+
+  const rule = v => last("rr", v);
+
+  values.valid.forEach(v => {
+    it(`value : ${v} should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`value : ${v} should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
+  });
 });
 
-// last rule test
+describe("Validate rule Pattern with value /^abc$/i", () => {
+  const values = {
+    valid: ["abc"],
+    invalid: ["abcr", "abr"]
+  };
 
-test("Last rule with end 'abc' and value 'fdabc' should be true", () => {
-  expect(last("abc", "fdabc")).toBe(true);
-});
+  const rule = v => pattern(/^abc$/i, v);
 
-test("Last rule with end 'abc' and value 'abcdf' should be true", () => {
-  expect(last("abc", "abcdf")).toBe(false);
-});
-
-test("Pattern rule with ^abc$ and value abc should be true", () => {
-  expect(pattern("^abc$", "abc")).toBe(true);
-});
-
-test("Pattern rule with ^abc$ and value abr should be false", () => {
-  expect(pattern("^abc$", "abr")).toBe(false);
+  values.valid.forEach(v => {
+    it(`value : ${v} should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`value : ${v} should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
+  });
 });
 
 describe("Validate validate email rule", () => {
@@ -112,12 +143,12 @@ describe("Validate validate email rule", () => {
     ]
   };
   emails.valid.forEach(validEmail => {
-    it(`Email rule with value : ${validEmail} should be true`, () => {
+    it(`Value : ${validEmail} should be true`, () => {
       expect(email(validEmail)).toBe(true);
     });
   });
   emails.invalid.forEach(inValid => {
-    it(`Email rule with value : ${inValid} should be false`, () => {
+    it(`Value : ${inValid} should be false`, () => {
       expect(email(inValid)).toBe(false);
     });
   });
@@ -183,12 +214,12 @@ describe("Validate validate url rule", () => {
     ]
   };
   urls.valid.forEach(valid => {
-    it(`Url rule with value ${valid} true`, () => {
+    it(`Value ${valid} true`, () => {
       expect(url(valid)).toBe(true);
     });
   });
   urls.invalid.forEach(inValid => {
-    it(`Url rule with value ${inValid} false`, () => {
+    it(`Value ${inValid} false`, () => {
       expect(url(inValid)).toBe(false);
     });
   });
