@@ -2,7 +2,7 @@ import { Field, Schema, When } from "../index";
 
 const json = JSON.stringify;
 
-describe("Validate apply in default Strict mode, contraint b field should be falsy when a truly", () => {
+describe("Validate constraint in default Strict mode, constraint b field should be falsy when a truly", () => {
   const values = {
     valid: [{ a: true, b: false }, { a: false, b: true }],
     invalid: [{ a: true, b: true }, { a: false, b: false }]
@@ -16,7 +16,7 @@ describe("Validate apply in default Strict mode, contraint b field should be fal
       b: Field()
         .boolean()
         .falsy({
-          apply: When(
+          constraint: When(
             "#a",
             Field()
               .boolean()
@@ -37,7 +37,7 @@ describe("Validate apply in default Strict mode, contraint b field should be fal
   });
 });
 
-describe("Validate apply in No Strict mode, contraint b field should be falsy when a truly", () => {
+describe("Validate constraint in No Strict mode, constraint b field should be falsy when a truly", () => {
   const values = {
     valid: [
       { a: true, b: false },
@@ -56,7 +56,7 @@ describe("Validate apply in No Strict mode, contraint b field should be falsy wh
         b: Field()
           .boolean()
           .falsy({
-            apply: When(
+            constraint: When(
               "#a",
               Field()
                 .boolean()
@@ -79,7 +79,7 @@ describe("Validate apply in No Strict mode, contraint b field should be falsy wh
   });
 });
 
-describe("Validate Apply with With multiple field `END` , contraint c should be true when a and b false", () => {
+describe("Validate constraint with With multiple field `END` , constraint c should be true when a and b false", () => {
   const values = {
     valid: [
       { a: true, b: true, c: false },
@@ -99,7 +99,7 @@ describe("Validate Apply with With multiple field `END` , contraint c should be 
       c: Field()
         .boolean()
         .truthy({
-          apply: When(
+          constraint: When(
             ["#a", "#b"],
             Field()
               .boolean()
@@ -115,7 +115,7 @@ describe("Validate Apply with With multiple field `END` , contraint c should be 
       c: Field()
         .boolean()
         .truthy({
-          apply: When(
+          constraint: When(
             "#a",
             Field()
               .boolean()
@@ -143,7 +143,7 @@ describe("Validate Apply with With multiple field `END` , contraint c should be 
   });
 });
 
-describe("Validate Apply with With `OR` , contraint c should be true when a or b false", () => {
+describe("Validate constraint with With `OR` , constraint c should be true when a or b false", () => {
   const values = {
     valid: [
       { a: true, b: true, c: false },
@@ -163,7 +163,7 @@ describe("Validate Apply with With `OR` , contraint c should be true when a or b
       c: Field()
         .boolean()
         .truthy({
-          apply: When(
+          constraint: When(
             "#a",
             Field()
               .boolean()
@@ -189,7 +189,7 @@ describe("Validate Apply with With `OR` , contraint c should be true when a or b
   });
 });
 
-describe("Validate Required Rule with apply, contraint b should equals abc and required when a is truthy", () => {
+describe("Validate Required Rule with constraint, constraint b should equals abc and required when a is truthy", () => {
   const values = {
     valid: [{ a: true, b: "abc" }, { a: false }, { a: false, b: "abc" }],
     invalid: [
@@ -208,7 +208,7 @@ describe("Validate Required Rule with apply, contraint b should equals abc and r
           .string()
           .equals("abc")
           .required({
-            apply: When(
+            constraint: When(
               "#a",
               Field()
                 .boolean()
@@ -231,7 +231,7 @@ describe("Validate Required Rule with apply, contraint b should equals abc and r
   });
 });
 
-describe("Validate Apply with Cross Field, contraint Field a string c is required when a equals b", () => {
+describe("Validate constraint with Cross Field, constraint Field a string c is required when a equals b", () => {
   const values = {
     valid: [
       { a: "str", b: "other" },
@@ -251,7 +251,7 @@ describe("Validate Apply with Cross Field, contraint Field a string c is require
       c: Field()
         .string()
         .required({
-          apply: When(
+          constraint: When(
             "#a",
             Field()
               .string()
