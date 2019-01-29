@@ -25,7 +25,7 @@ export const empty = value =>
 
 export const exact = (compair, value) => compair === value;
 
-export const equalsOneOf = (set, value) => {
+export const oneOf = (set, value) => {
   const data = Object.entries(set).map(element => element[1]);
   for (let i = 0; i < data.length; i += 1) {
     if (equals(data[i], value)) {

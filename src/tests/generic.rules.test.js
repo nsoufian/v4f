@@ -4,7 +4,7 @@ import {
   exact,
   empty,
   none,
-  equalsOneOf,
+  oneOf,
   exactOneOf
 } from "../rules/generic";
 
@@ -136,7 +136,8 @@ describe("Validate oneOf Rule with 4 as value", () => {
     valid: [[3, 4, 8, 9], { a: 8, b: 4 }, [2, 3, "4"], { a: 3, b: "4" }],
     invalid: [[3, 5, 8, 9], { a: 8, b: 9, c: 44 }]
   };
-  const rule = v => equalsOneOf(v, 4);
+  const rule = v => oneOf(v, 4);
+
   values.valid.forEach(v => {
     it(`Value : ${v} , should be true`, () => {
       expect(rule(v)).toBe(true);

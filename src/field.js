@@ -26,6 +26,10 @@ export class Field {
     return [this.#rules, this.#not];
   }
 
+  get any() {
+    return this;
+  }
+
   get not() {
     return new Field([...this.#rules], true);
   }
