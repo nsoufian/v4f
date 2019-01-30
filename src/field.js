@@ -1,31 +1,76 @@
-import { getErrorMessage, fieldWrapper } from "./utils";
-import rules from "./rules/index";
+import allRules from "./rules/index";
+import { rulesWrapper, resolveArgs, isOptionalSuccess } from "./utils";
 
-class Field {
-  #rules = [];
+const isFail = (isRuleSuccess, constraint, strict, values) =>
+  strict
+    ? constraint && constraint.validate(values) !== isRuleSuccess
+    : constraint && constraint.validate(values) && !isRuleSuccess;
 
-  _add(rule) {
-    // push this rule given in param to rules array
-    this.#rules.push(rule);
-    // and return context to continue the chain of rules
+const messageTemplate = (message, value, field) =>
+  message
+    .replace("%{value}", value)
+    .replace("%{field}", field)
+    .trim();
+
+export class Field {
+  #rules = null;
+
+  #not = null;
+
+  constructor(rules = [], not = false) {
+    this.#rules = rules;
+    this.#not = not;
+  }
+
+  _clone() {
+    return [this.#rules, this.#not];
+  }
+
+  get any() {
     return this;
   }
 
-  validate(value, { message = false } = {}) {
+  get not() {
+    return new Field([...this.#rules], true);
+  }
+
+  validate(
+    value,
+    { verbose = false, values = {}, strict = true, field = "" } = {}
+  ) {
     for (let i = 0; i < this.#rules.length; i += 1) {
-      // Get validator function and options object from
-      // the current rule.
-      const { validator, options } = this.#rules[i];
-      if (validator(value) !== true) {
-        // the rule is fail , we check if the user want
-        // a error message indicator or boolean.
-        if (message === true) return getErrorMessage(options);
-        return false;
+      const {
+        name,
+        rule,
+        args,
+        not,
+        options: { constraint, message }
+      } = this.#rules[i];
+
+      const isRuleSuccess = not !== rule(...resolveArgs(args, values), value);
+
+      const isOptionalRule =
+        name === "required" &&
+        (not || (strict && constraint && !constraint.validate(values)));
+
+      if (isOptionalRule) {
+        if (isOptionalSuccess(value, this.#rules[i + 1].name)) {
+          break;
+        }
+      } else if (
+        (!isRuleSuccess && !constraint) ||
+        (name === "required" &&
+          (!not && strict && constraint) &&
+          !isRuleSuccess) ||
+        isFail(isRuleSuccess, constraint, strict, values)
+      ) {
+        return verbose === true
+          ? messageTemplate(message, value, field)
+          : false;
       }
     }
-    // All rules are valide we return true to indicate that
     return true;
   }
 }
 
-export default fieldWrapper(rules)(Field);
+export default rulesWrapper(allRules)(Field);

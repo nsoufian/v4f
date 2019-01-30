@@ -1,104 +1,273 @@
-import { typeSchema, field } from "../index";
+import { Schema, Field } from "../index";
 
-const valideData = {
-  username: "username",
-  password: "password",
-  email: "xns@live.fr",
-  isAdmin: true,
-  url: "http://github.repo"
-};
+const json = JSON.stringify;
 
-const notValideData = {
-  username: "xns",
-  password: "password",
-  email: 3,
-  isAdmin: "true"
-};
-const User = typeSchema({
-  username: field()
-    .string({ message: "string" })
-    .minLength(6, { message: "minLength" })
-    .required({ message: "required" }),
-  password: field()
-    .string({ message: "string" })
-    .minLength(6, { message: "minLength" })
-    .required({ message: "required" }),
-  email: field()
-    .string({ message: "string" })
-    .required({ message: "required" }),
-  isAdmin: field()
-    .boolean({ message: "boolean" })
-    .required({ message: "required" }),
-  url: field()
-    .string({ message: "string" })
-    .required({ message: "required" })
-});
+describe("Validate Schema, Field a string should equals abc ,and b boolean both required", () => {
+  const values = {
+    valid: [
+      [{ a: "abc", b: true }, {}, true],
+      [{ a: "abc", b: true }, { verbose: true }, null],
+      [
+        { a: "abc", b: true },
+        { verbose: true, bool: true },
+        { a: true, b: true }
+      ]
+    ],
+    invalid: [
+      [{ a: "abc" }, {}, false],
+      [{ a: "bad", b: true }, {}, false],
+      [undefined, {}, false],
+      [{}, {}, false],
+      [{ a: [], b: 2 }, {}, false],
+      [{ a: "abc" }, { verbose: true }, { b: "required" }],
+      [{ a: "bad", b: true }, { verbose: true }, { a: "equals" }],
+      [{}, { verbose: true }, { a: "required", b: "required" }],
+      [{ a: [2], b: 2 }, { verbose: true }, { a: "string", b: "boolean" }],
+      [{ a: "abc" }, { verbose: true, bool: true }, { b: false, a: true }],
+      [
+        { a: "bad", b: true },
+        { verbose: true, bool: true },
+        { a: false, b: true }
+      ],
+      [{}, { verbose: true, bool: true }, { a: false, b: false }],
+      [undefined, { verbose: true, bool: true }, { a: false, b: false }],
+      [{ a: [], b: 2 }, { verbose: true, bool: true }, { a: false, b: false }]
+    ]
+  };
 
-const Address = typeSchema({
-  country: field()
-    .string({ message: "string" })
-    .required({ message: "required" }),
-  city: field()
-    .string({ message: "string" })
-    .required({ message: "required" }),
-  zipCode: field()
-    .number({ message: "number" })
-    .required({ message: "required" })
-});
-const Client = typeSchema({
-  name: field()
-    .string({ message: "string" })
-    .required({ message: "required" }),
-  address: Address
-});
+  const rule = (v, options) =>
+    Schema(
+      {
+        a: Field()
+          .string()
+          .equals("abc")
+          .required(),
+        b: Field()
+          .boolean()
+          .required()
+      },
+      options
+    ).validate(v);
 
-test("Test Schema with boolean result error", () => {
-  expect(User.validate(valideData)).toBe(true);
-  expect(User.validate(notValideData)).toBe(false);
-});
+  [...values.valid, ...values.invalid].forEach(([data, options, result]) => {
+    it(`Run validate with Data : ${json(data)}  ||  Options: ${json(
+      options
+    )} || Should return ${json(result)}`, () => {
+      expect(rule(data, options)).toEqual(result);
+    });
+  });
 
-test("Test Schema with Object messages result error", () => {
-  expect(User.validate(valideData, { message: true })).toBe(null);
-  expect(User.validate(notValideData, { message: true })).toEqual({
-    username: "minLength",
-    email: "string",
-    url: "string",
-    isAdmin: "boolean"
+  describe("Same Validation With Async Options", () => {
+    values.valid.forEach(([data, options]) => {
+      it(`Run validate with Data : ${json(data)}  ||  Options: ${json({
+        async: true,
+        ...options
+      })} || Should be resolved`, () =>
+        rule(data, { async: true, ...options }).then(result =>
+          expect(data).toEqual(result)
+        ));
+    });
+    values.invalid.forEach(([data, options, result]) => {
+      it(`Run validate with Data : ${json(data)}  ||  Options: ${json({
+        async: true,
+        ...options
+      })} || Should be Rejected`, () => {
+        expect.assertions(1);
+        return rule(data, { async: true, ...options }).catch(errors =>
+          expect(errors).toEqual(result === false ? undefined : result)
+        );
+      });
+    });
   });
 });
 
-test("Test Single field from schema", () => {
-  expect(User.username.validate("username")).toBe(true);
-  expect(User.username.validate("use")).toBe(false);
-  expect(User.username.validate(3, { message: true })).toBe("string");
-  expect(User.password.validate(3)).toBe(false);
-  expect(User.isAdmin.validate("true")).toBe(false);
-  expect(User.isAdmin.validate(false)).toBe(true);
+describe("One Field Validation, with Field a string should equals abc", () => {
+  const values = {
+    // TODO Fix One field validation in verbose options true
+    valid: [["abc", {}, true], ["abc", { verbose: true }, true]],
+    invalid: [
+      ["bad", {}, false],
+      ["bad", { verbose: true }, "equals"],
+      [{ a: "bad", b: true }, { verbose: true }, "string"],
+      [undefined, { verbose: true }, "required"]
+    ]
+  };
+  const rule = (v, options) =>
+    Schema({
+      a: Field()
+        .string()
+        .equals("abc")
+        .required(),
+      b: Field()
+        .boolean()
+        .required()
+    }).a.validate(v, options);
+
+  [...values.valid, ...values.invalid].forEach(([data, options, result]) => {
+    it(`Run validate with Data : ${json(data)}  ||  Options: ${json(
+      options
+    )} || Should return ${json(result)}`, () => {
+      expect(rule(data, options)).toEqual(result);
+    });
+  });
 });
 
-test("Test Nested schema with boolean result error", () => {
-  expect(
-    Client.validate({
-      name: "client",
-      address: { country: "france", city: "paris", zipCode: 75020 }
-    })
-  ).toBe(true);
-  expect(
-    Client.validate({
-      name: "client",
-      address: { country: null, city: "paris", zipCode: 750 }
-    })
-  ).toBe(false);
-});
-
-test("Test Nested schema with message result error", () => {
-  expect(
-    Client.validate(
+describe("Validate Nested Schema and Related field with callback, with Field a boolean should be inverse of b.x", () => {
+  const values = {
+    valid: [
+      [{ a: true, b: { x: false } }, {}, true],
+      [{ a: false, b: { x: true } }, { verbose: true }, null],
+      [
+        { a: false, b: { x: true } },
+        { verbose: true, bool: true },
+        { a: true, b: { x: true } }
+      ]
+    ],
+    invalid: [
+      [{ a: false, b: { x: false } }, {}, false],
+      [{}, {}, false],
+      [{ a: true, b: { x: true } }, { verbose: true }, { a: "equals" }],
+      [
+        { a: true, b: { x: true } },
+        { verbose: true, bool: true },
+        { a: false, b: { x: true } }
+      ],
+      [{}, { verbose: true, bool: true }, { a: false, b: { x: false } }]
+    ]
+  };
+  const rule = (data, options) =>
+    Schema(
       {
-        name: 1,
-        address: { country: null, city: "paris", zipCode: 750 }
+        a: Field()
+          .boolean()
+          .equals(["#b.x", value => !value])
+          .required(),
+        b: Schema({
+          x: Field()
+            .boolean()
+            .required()
+        })
       },
-      { message: true }
-    )
-  ).toEqual({ name: "string", address: { country: "string" } });
+      options
+    ).validate(data);
+
+  [...values.valid, ...values.invalid].forEach(([data, options, result]) => {
+    it(`Run validate with Data : ${json(data)}  ||  Options: ${json(
+      options
+    )} || Should return ${json(result)}`, () => {
+      expect(rule(data, options)).toEqual(result);
+    });
+  });
+  describe("Same Validation With Async Options", () => {
+    values.valid.forEach(([data, options]) => {
+      it(`Run validate with Data : ${json(data)}  ||  Options: ${json({
+        async: true,
+        ...options
+      })} || Should be resolved`, () =>
+        rule(data, { async: true, ...options }).then(result =>
+          expect(data).toEqual(result)
+        ));
+    });
+    values.invalid.forEach(([data, options, result]) => {
+      it(`Run validate with Data : ${json(data)}  ||  Options: ${json({
+        async: true,
+        ...options
+      })} || Should be Rejected`, () => {
+        expect.assertions(1);
+        return rule(data, { async: true, ...options }).catch(errors =>
+          expect(errors).toEqual(result === false ? undefined : result)
+        );
+      });
+    });
+  });
+});
+
+describe("Validate Nested Schema and Related field, with Field a boolean should equals to c", () => {
+  const values = {
+    valid: [
+      [{ a: true, b: { x: false }, c: true }, {}, true],
+      [{ a: false, b: { x: true }, c: false }, { verbose: true }, null],
+      [
+        { a: true, b: { x: true }, c: true },
+        { verbose: true, bool: true },
+        { a: true, b: { x: true }, c: true }
+      ]
+    ],
+    invalid: [
+      [{ a: false, b: { x: false }, c: true }, {}, false],
+      [
+        {},
+        { verbose: true },
+        { a: "required", b: { x: "required" }, c: "required" }
+      ],
+      [
+        { a: true, b: { x: true }, c: false },
+        { verbose: true },
+        { a: "equals" }
+      ],
+      [
+        { a: true, c: true },
+        { verbose: true, bool: true },
+        { a: true, b: { x: false }, c: true }
+      ],
+      [
+        {},
+        { verbose: true, bool: true },
+        { a: false, b: { x: false }, c: false }
+      ],
+      [
+        undefined,
+        { verbose: true, bool: true },
+        { a: false, b: { x: false }, c: false }
+      ]
+    ]
+  };
+  const rule = (data, options) =>
+    Schema(
+      {
+        a: Field()
+          .boolean()
+          .equals(["#c"])
+          .required(),
+        c: Field()
+          .boolean()
+          .required(),
+        b: Schema({
+          x: Field()
+            .boolean()
+            .required()
+        })
+      },
+      options
+    ).validate(data);
+
+  [...values.valid, ...values.invalid].forEach(([data, options, result]) => {
+    it(`Run validate with Data : ${json(data)}  ||  Options: ${json(
+      options
+    )} || Should return ${json(result)}`, () => {
+      expect(rule(data, options)).toEqual(result);
+    });
+  });
+  describe("Same Validation With Async Options", () => {
+    values.valid.forEach(([data, options]) => {
+      it(`Run validate with Data : ${json(data)}  ||  Options: ${json({
+        async: true,
+        ...options
+      })} || Should be resolved`, () =>
+        rule(data, { async: true, ...options }).then(result =>
+          expect(data).toEqual(result)
+        ));
+    });
+    values.invalid.forEach(([data, options, result]) => {
+      it(`Run validate with Data : ${json(data)}  ||  Options: ${json({
+        async: true,
+        ...options
+      })} || Should be Rejected`, () => {
+        expect.assertions(1);
+        return rule(data, { async: true, ...options }).catch(errors =>
+          expect(errors).toEqual(result === false ? undefined : result)
+        );
+      });
+    });
+  });
 });

@@ -1,14 +1,5 @@
-export const boolean = (options = {}) => ({
-  validator: value => typeof value === "boolean",
-  options
-});
+export const boolean = value => typeof value === "boolean";
 
-export const falsy = (options = {}) => ({
-  validator: value => value === false,
-  options
-});
+export const falsy = value => value === false;
 
-export const truthy = (options = {}) => ({
-  validator: value => value === true,
-  options
-});
+export const truthy = value => value === true;

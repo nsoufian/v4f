@@ -1,56 +1,177 @@
-import { getValidator as get } from "../utils";
-import { required, equals } from "../rules/generic";
+import {
+  equals,
+  required,
+  exact,
+  empty,
+  none,
+  oneOf,
+  exactOneOf
+} from "../rules/generic";
 
-test("Test Generic required Rule", () => {
-  const validator = get()(required);
-  const valideString = "ValideStringend";
-  const valideArray = ["l"];
-  const valideNumber = 3;
-  const valideObject = { username: "test" };
-  const notValideString = "";
-  const notValideArray = [];
-  const notValide = undefined;
-  const notValideNull = null;
-  const notValideObject = {};
-  expect(validator(valideString)).toBe(true);
-  expect(validator(valideArray)).toBe(true);
-  expect(validator(valideNumber)).toBe(true);
-  expect(validator(valideObject)).toBe(true);
-  expect(validator(notValideString)).toBe(false);
-  expect(validator(notValideArray)).toBe(false);
-  expect(validator(notValide)).toBe(false);
-  expect(validator(notValideNull)).toBe(false);
-  expect(validator(notValideObject)).toBe(false);
+describe("Validate Required Rule", () => {
+  const values = {
+    valid: ["string", [3, 4], 9, true, false, { a: 1 }],
+    invalid: ["", [], {}, undefined, null]
+  };
+  const rule = required;
+  values.valid.forEach(v => {
+    it(`Value : ${v} , should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`Value : ${v} , should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
+  });
 });
 
-test("Test Generic equals Rule with String", () => {
-  const validator = get("string")(equals);
-  expect(validator("string")).toBe(true);
-  expect(validator("")).toBe(false);
+describe("Validate Equals Rule", () => {
+  const values = {
+    valid: [
+      ["str", "str"],
+      [2, 2],
+      [3, "3"],
+      [true, true],
+      [{ a: 1 }, { a: 1 }],
+      [[3, [3]], [3, [3]]]
+    ],
+    invalid: [["string", "stringstr"], [{ a: 2 }, { a: 3 }], [[2, 1], [1, 2]]]
+  };
+  const rule = equals;
+
+  values.valid.forEach(([x, y]) => {
+    it(`Value : ${x} and ${y} , should be true`, () => {
+      expect(rule(x, y)).toBe(true);
+    });
+  });
+  values.invalid.forEach(([x, y]) => {
+    it(`Value : ${x} and ${y} , should be false`, () => {
+      expect(rule(x, y)).toBe(false);
+    });
+  });
 });
 
-test("Test Generic equals Rule with Number", () => {
-  const validator = get(3)(equals);
-  expect(validator(3)).toBe(true);
-  expect(validator(4)).toBe(false);
+/**
+ * Unit Test for exact rule
+ */
+
+describe("Validate Exact Rule", () => {
+  const obj = {
+    a: 1
+  };
+  const arr = [1, 2, 3];
+  const values = {
+    valid: [["str", "str"], [2, 2], [true, true], [obj, obj], [arr, arr]],
+    invalid: [
+      ["string", "stringstr"],
+      [{ a: 2 }, { a: 3 }],
+      [[2, 1], [1, 2]],
+      [{ a: 1 }, { a: 1 }],
+      [[1, 2], [1, 2]],
+      ["3", 3]
+    ]
+  };
+  const rule = exact;
+
+  values.valid.forEach(([x, y]) => {
+    it(`Value : ${x} and ${y} , should be true`, () => {
+      expect(rule(x, y)).toBe(true);
+    });
+  });
+  values.invalid.forEach(([x, y]) => {
+    it(`Value : ${x} and ${y} , should be false`, () => {
+      expect(rule(x, y)).toBe(false);
+    });
+  });
 });
 
-test("Test Generic equals Rule with Boolean", () => {
-  const validator = get(true)(equals);
-  expect(validator(true)).toBe(true);
-  expect(validator(false)).toBe(false);
+/**
+ * Test for Empty rule
+ */
+describe("Validate Empty Rule", () => {
+  const values = {
+    valid: [[], {}, ""],
+    invalid: [[1, 2], { a: 2 }, "string"]
+  };
+  const rule = empty;
+  values.valid.forEach(v => {
+    it(`Value : ${v} , should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`Value : ${v} , should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
+  });
 });
 
-test("Test Generic equals Rule with Array", () => {
-  const validator = get([1, 2, [3, 4]])(equals);
-  expect(validator([1, 2, [3, 4]])).toBe(true);
-  expect(validator([3, 4])).toBe(false);
+/**
+ * Test for None rule
+ */
+
+describe("Validate None Rule", () => {
+  const values = {
+    valid: [[], {}, "", null, undefined],
+    invalid: [[1, 3], "string", { a: 3 }]
+  };
+  const rule = none;
+  values.valid.forEach(v => {
+    it(`Value : ${v} , should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`Value : ${v} , should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
+  });
+});
+/**
+ * Test for equalsOneOf rule
+ */
+describe("Validate oneOf Rule with 4 as value", () => {
+  const values = {
+    valid: [[3, 4, 8, 9], { a: 8, b: 4 }, [2, 3, "4"], { a: 3, b: "4" }],
+    invalid: [[3, 5, 8, 9], { a: 8, b: 9, c: 44 }]
+  };
+  const rule = v => oneOf(v, 4);
+
+  values.valid.forEach(v => {
+    it(`Value : ${v} , should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`Value : ${v} , should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
+  });
 });
 
-test("Test Generic equals Rule with Object", () => {
-  const value = { username: "username", pass: [2, 3] };
-  const notValue = { username: "pass" };
-  const validator = get({ username: "username", pass: [2, 3] })(equals);
-  expect(validator(value)).toBe(true);
-  expect(validator(notValue)).toBe(false);
+/**
+ * Test for exactOneOf rule
+ */
+describe("Validate oneOf Rule with 4 as value", () => {
+  const values = {
+    valid: [[3, 4, 8, 9], { a: 8, b: 4 }],
+    invalid: [
+      [3, 5, 8, 9],
+      { a: 8, b: 9, c: 44 },
+      [2, 3, "4"],
+      { a: 3, b: "4" }
+    ]
+  };
+  const rule = v => exactOneOf(v, 4);
+  values.valid.forEach(v => {
+    it(`Value : ${v} , should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`Value : ${v} , should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
+  });
 });

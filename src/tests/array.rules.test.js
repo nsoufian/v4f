@@ -1,29 +1,28 @@
-import { boolean, truthy, falsy } from "../rules/boolean";
+import { array, allEquals, allExact } from "../rules/array";
 
-/**
- * Test boolean rule with multiple values
- * */
+describe("Validate Array rule", () => {
+  const values = { valid: [[], [1, 2]], invalid: [{}, 2, "l", true] };
+  const rule = array;
+  values.valid.forEach(v => {
+    it(`Value : ${v} , should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`Value : ${v} , should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
+  });
+});
 
-describe("Validate Boolean Rule", () => {
+describe("Validate allEquals rule, with value '3'", () => {
   const values = {
-    valid: [true, false],
-    invalid: ["", null, 3, [3, 4], undefined]
+    valid: [[3, 3, 3, 3], [3, "3"]],
+    invalid: [[2, 3, 3, 3], [3, 3, 3, 7]]
   };
-  const rule = boolean;
-  values.valid.forEach(v => {
-    it(`Value : ${v} , should be true`, () => {
-      expect(rule(v)).toBe(true);
-    });
-  });
-  values.invalid.forEach(v => {
-    it(`Value : ${v} , should be false`, () => {
-      expect(rule(v)).toBe(false);
-    });
-  });
-});
-describe("Validate Truthy Rule", () => {
-  const values = { valid: [true], invalid: [false] };
-  const rule = truthy;
+
+  const rule = arr => allEquals("3", arr);
+
   values.valid.forEach(v => {
     it(`Value : ${v} , should be true`, () => {
       expect(rule(v)).toBe(true);
@@ -36,9 +35,14 @@ describe("Validate Truthy Rule", () => {
   });
 });
 
-describe("Validate Falsy Rule", () => {
-  const values = { valid: [false], invalid: [true] };
-  const rule = falsy;
+describe("Validate allEquals rule, with value 3", () => {
+  const values = {
+    valid: [[3, 3, 3, 3]],
+    invalid: [[2, 3, 3, 3], [3, 3, 3, 7], [3, "3"], ["3", "3"]]
+  };
+
+  const rule = arr => allExact(3, arr);
+
   values.valid.forEach(v => {
     it(`Value : ${v} , should be true`, () => {
       expect(rule(v)).toBe(true);
