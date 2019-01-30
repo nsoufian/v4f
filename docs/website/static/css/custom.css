@@ -14,3 +14,20 @@
 
 @media only screen and (min-width: 1500px) {
 }
+.button {
+    background: $primaryColor;
+    color: #fff;
+    font-size: 30px;
+    padding: .5em 1.25em;
+    font-weight: bold;
+}
+  
+.button:visited {
+    background: $primaryColor;
+    color: #fff;
+}
+  
+.button:hover {
+    background: #fff;
+    color: $primaryColor;
+}
