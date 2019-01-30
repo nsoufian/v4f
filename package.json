@@ -1,10 +1,17 @@
 {
 	"name": "v4f",
-	"version": "0.0.1",
-	"description": "Light and Simple data & types validator for browser from",
-	"main": "lib/index",
+	"version": "0.0.9",
+	"description": "A declarative, efficient, and flexible JavaScript validation library for Humans .",
+	"maintainers": [
+		"soufiane nassih"
+	],
+	"main": "lib/cjs.js",
+	"module": "lib/es.js",
 	"typings": "lib/index.d.ts",
 	"author": "Nassih soufiane",
+	"files": [
+		"lib"
+	],
 	"license": "MIT",
 	"dependencies": {},
 	"devDependencies": {
