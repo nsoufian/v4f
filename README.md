@@ -26,12 +26,14 @@
 
 # Description :
 ### V4F, Validation for Forms
-Javascript light library for froms data validations using schema types.
+Javascript light library  data validations using schema types.
+
+[Documentation](https://v4f.js.org/doc) | [Exemples](https://v4f.js.org/exemples) | [API Reference](https://v4f.js.org/api) | [Need help ?](https://v4f.js.org/help)
 ###  New validation library again   !
 
 why new validation library where they exist several good ones around, sure you are completely right. but the problem with those libraries is that almost all of the theme focus in data validation and they forget the key reason why we do validation for, is that we desire to guide our users by showing them what they missing or what they doing wrong with  some pieces of information, but sadly  you end up with generic messages errors or writing code on  the top of this libraries every time you use them.
 
-**V4F** comes to solve this problem by focusing on those two features validations and failures messages, with easy and powerful syntax that feels more human that everyone can understand.
+**V4F** comes to solve this problem by focusing on those two features validations and failures messages, **V4F** comes with easy and powerful syntax that feels more human that everyone can understand with more than 40+ built-in rules.
 
 ##  Features 
 
@@ -104,4 +106,43 @@ npm install v4f
 ```
 This assumes you are using [npm](https://www.npmjs.com/) as your package manager.
 
+or
+
+```shell
+yarn add v4f
+```
+
+If you you use [yarn](https://yarnpkg.com/) as package your package manager.
+
 ## Usage
+
+#### No ES6
+```javascript
+var v4f = required("v4f");
+
+const User = v4f.Schema({// Your schema here});
+```
+#### ES6
+```javascript
+import {Schema, Field} from "v4f";
+
+const User = Schema({// Your schema here});
+
+```
+Read the [Usage Guide](https://v4f.js.org/docs/usage) on our website for detailed instructions on how to use the library.
+
+
+## Contributing
+
+In general, we follow the "fork-and-pull" Git workflow.
+
+1.  Fork on GitHub
+2.  Make changes to your own fork
+3.  Submit a Pull request so that we can review your changes
+
+## Maintainers
+
+-   [reyx7](https://github.com/reyx7)  -  **Nassih Soufiane**  (author)
+
+
+### License (MIT)
