@@ -1,0 +1,36 @@
+{
+	"docs": {
+		"Introduction": [
+			"introduction/get-started",
+			"introduction/installation",
+			"introduction/motivation",
+			"introduction/examples"
+		],
+		"Guides": [
+			"guides/field",
+			"guides/schema",
+			"guides/options",
+			"guides/nested-schema",
+			"guides/related-field",
+			"guides/when"
+		],
+		"Advanced Guides": [
+			"advanced-guides/strict-mode",
+			"advanced-guides/no-strict-mode"
+		],
+		"API Reference": [
+			"api-reference/api",
+			"api-reference/field",
+			"api-reference/schema",
+			"api-reference/when",
+			"api-reference/generic",
+			"api-reference/string",
+			"api-reference/number",
+			"api-reference/boolean",
+			"api-reference/array",
+			"api-reference/object",
+			"api-reference/iterator"
+		]
+	},
+	"docs-other": {}
+}
