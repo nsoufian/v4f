@@ -230,14 +230,7 @@ When the strict mode is turned off , the rule is only executed when constraint i
 it's very useful when you what some rule to be executed only when a constraint is
 true, like field is required only if other field have certain value.
 
-let us defines the following constraints:
-
--   a :
-    -   Must be boolean.
-    -   Required.
--   b :
-    -   Must be boolean.
-    -   **Required** when a is **true** otherwise is **optional**
+let checkout the above example with strict mode off
 
 ```javascript
 import { Schema, Field, When } from "v4f";
@@ -249,12 +242,12 @@ const Strict = Schema(
 			.required(),
 		b: Field()
 			.boolean()
-			.required({
+			.truthy({
 				constraint: When(
 					"#a",
 					Field()
 						.boolean()
-						.truthy()
+						.falsy()
 				)
 			})
 	},
@@ -263,9 +256,11 @@ const Strict = Schema(
 
 Strict.validate({ a: true, b: false }); // true
 
-Strict.validate({ a: false }); // true
-
 Strict.validate({ a: false, b: true }); // true
 
-Strict.validate({ a: true }); // false
+Strict.validate({ a: true, b: true }); // true
+
+Strict.validate({ a: false, b: false }); // false
 ```
+
+> **NOTE: ** When strict mode is off truthy is executed only when the constraint is true, otherwise is skiped
