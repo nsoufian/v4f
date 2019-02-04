@@ -5,47 +5,38 @@
     "previous": "Previous",
     "tagline": "A declarative, efficient, and flexible JavaScript validation library for Humans",
     "docs": {
-      "advanced-guides/no-strict-mode": {
-        "title": "No strict mode"
-      },
-      "advanced-guides/README": {
-        "title": "advanced-guides/README"
-      },
-      "advanced-guides/strict-mode": {
-        "title": "Strict mode"
-      },
       "api-reference/api": {
         "title": "API Reference"
-      },
-      "api-reference/array": {
-        "title": "Array"
-      },
-      "api-reference/boolean": {
-        "title": "Boolean"
       },
       "api-reference/field": {
         "title": "Field"
       },
-      "api-reference/generic": {
-        "title": "Generic"
-      },
-      "api-reference/iterator": {
-        "title": "Iterator"
-      },
-      "api-reference/number": {
-        "title": "Number"
-      },
-      "api-reference/object": {
-        "title": "Object"
-      },
       "api-reference/README": {
         "title": "api-reference/README"
       },
+      "api-reference/rules/array": {
+        "title": "Array"
+      },
+      "api-reference/rules/boolean": {
+        "title": "Boolean"
+      },
+      "api-reference/rules/generic": {
+        "title": "Generic"
+      },
+      "api-reference/rules/iterator": {
+        "title": "Iterator"
+      },
+      "api-reference/rules/number": {
+        "title": "Number"
+      },
+      "api-reference/rules/object": {
+        "title": "Object"
+      },
+      "api-reference/rules/string": {
+        "title": "String"
+      },
       "api-reference/schema": {
         "title": "Schema"
-      },
-      "api-reference/string": {
-        "title": "String"
       },
       "api-reference/when": {
         "title": "When"
@@ -68,9 +59,6 @@
       "guides/schema": {
         "title": "Schema"
       },
-      "guides/when": {
-        "title": "Related Constraints"
-      },
       "introduction/examples": {
         "title": "Examples"
       },
@@ -91,7 +79,7 @@
       }
     },
     "links": {
-      "Docs": "Docs",
+      "Getting Started": "Getting Started",
       "API": "API",
       "Github": "Github",
       "Help": "Help"
@@ -99,7 +87,6 @@
     "categories": {
       "Introduction": "Introduction",
       "Guides": "Guides",
-      "Advanced Guides": "Advanced Guides",
       "API Reference": "API Reference"
     }
   },

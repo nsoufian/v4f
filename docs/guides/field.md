@@ -3,14 +3,14 @@ id: field
 title: Field
 ---
 
-Settings up field validation are straightforward, and all thing begins from Field function followed by the type of field you want to validate.
+Settings up field validation are straightforward, and all thing begins from **Field function** followed by the **type of field** you want to validate.
 
 <!--DOCUSAURUS_CODE_TABS-->
 
 <!--string-->
 
 ```javascript
-import { Field } from "v4f";
+import { Field } from "v4f"; // ES6
 
 Field().string(); // Chain your rules after this
 ```
@@ -18,7 +18,7 @@ Field().string(); // Chain your rules after this
 <!--number-->
 
 ```javascript
-import { Field } from "v4f";
+import { Field } from "v4f"; // ES6
 
 Field().number(); // Chain your rules after this
 ```
@@ -26,7 +26,7 @@ Field().number(); // Chain your rules after this
 <!--boolean-->
 
 ```javascript
-import { Field } from "v4f";
+import { Field } from "v4f"; // ES6
 
 Field().boolean(); // Chain your rules after this
 ```
@@ -34,7 +34,7 @@ Field().boolean(); // Chain your rules after this
 <!--array-->
 
 ```javascript
-import { Field } from "v4f";
+import { Field } from "v4f"; // ES6
 
 Field().array(); // Chain your rules after this
 ```
@@ -42,7 +42,7 @@ Field().array(); // Chain your rules after this
 <!--object-->
 
 ```javascript
-import { Field } from "v4f";
+import { Field } from "v4f"; // ES6
 
 Field().object(); // Chain your rules after this
 ```
@@ -50,14 +50,14 @@ Field().object(); // Chain your rules after this
 <!--any-->
 
 ```javascript
-import { Field } from "v4f";
+import { Field } from "v4f"; // ES6
 
 Field().any; // Chain your rules after this
 ```
 
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-## Chaining rules
+## Chaining Rules
 
 To build the field validation, we use a model called chaining, Essentially means that you make each validation rule after one another, This creates a smooth typing experience.
 

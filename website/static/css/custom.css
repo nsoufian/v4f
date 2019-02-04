@@ -80,3 +80,6 @@ pre .btnIcon:hover {
 .btnClipboard {
     right: 10px;
 }
+.fixedHeaderContainer header img{
+    margin-right: 0px;
+}

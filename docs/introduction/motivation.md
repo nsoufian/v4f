@@ -3,7 +3,7 @@ id: motivation
 title: Motivation
 ---
 
-As the requirements for javascript applications have become increasingly complicated, our code must manage more validation than ever before. This validation can include complex data stricture with related field validation or nested or composed stricture.
+As the requirements for javascript applications have become increasingly complicated, our code must manage more validation than ever before. This validation can include complex data structure with related field validation or nested or composed structure.
 
 Managing all validation in your application can become harder if one field depends on the value of other areas and another one as well depends on others fields, at some point, you no longer track what **happens in your code**, and **you will lose control** of your what data is validated.
 

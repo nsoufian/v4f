@@ -29,7 +29,7 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    { label: "Docs", doc: "introduction/get-started" },
+    { label: "Getting Started", doc: "introduction/get-started" },
     { label: "API", doc: "api-reference/api" },
     {
       href: "https://github.com/web-pyjs/v4f",
