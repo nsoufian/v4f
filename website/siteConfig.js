@@ -82,6 +82,7 @@ const siteConfig = {
 
   // On page navigation for the current documentation page.
   onPageNav: "separate",
+  scrollToTop: true,
   // No .html extensions for paths.
   cleanUrl: true,
   docsSideNavCollapsible: true,
