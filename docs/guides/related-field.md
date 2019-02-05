@@ -26,7 +26,7 @@ const User = Schema({
 		.required(),
 	passwordConfirmation: Field()
 		.string()
-		// Access to value of username buy putting the name of field in array start buy #
+		// Access to value of username by putting the name of the field start by # inside a array.
 		.equals(["#username"])
 });
 ```
