@@ -90,3 +90,7 @@ pre .btnIcon:hover {
 .fixedHeaderContainer header img{
     margin-right: 0px;
 }
+
+pre .btnIcon{
+    color: #1565c0;
+}
