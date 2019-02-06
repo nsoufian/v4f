@@ -38,7 +38,7 @@
 		"rollup-plugin-node-resolve": "^4.0.0"
 	},
 	"scripts": {
-		"build": "rollup -c && cp src/index.d.ts lib/",
+		"build": "rollup -c",
 		"watch": "rollup -c -w",
 		"test": "jest",
 		"tc": "jest --coverage && rm -rf ./coverage",
