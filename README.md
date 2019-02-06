@@ -59,22 +59,22 @@ const User = Schema({
   .string()
   .alphaNum()
   .required({ 
-	 constraint: When(
-	  "#email", Field()
-		 .any()
-		 .none()
-		)
-	}),
+   constraint: When(
+    "#email", Field()
+    .any()
+    .none()
+   )
+  }),
  email: Field()
   .string()
   .email()
   .required({ 
-	 constraint: When(
-	  "#username", Field()
-		 .any()
-		 .none()
-		)
-	}),
+   constraint: When(
+    "#username", Field()
+    .any()
+    .none()
+   )
+  }),
  password: Field()
   .string()
   .min(6)
