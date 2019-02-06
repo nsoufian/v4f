@@ -46,7 +46,6 @@ type IteratorRules<T = StringRules | ArrayRules> = {
 type StringRules = {
   first(value: String | RelatedField, options?: Options): STRING;
   last(value: String | RelatedField, options?: Options): STRING;
-  last(value: String | RelatedField, options?: Options): STRING;
   pattern(value: String | RelatedField, options?: Options): STRING;
   ipv4(value: String | RelatedField, options?: Options): STRING;
   ipv6(value: String | RelatedField, options?: Options): STRING;

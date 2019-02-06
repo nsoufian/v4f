@@ -1,0 +1,36 @@
+{
+	"docs": {
+		"Introduction": [
+			"introduction/get-started",
+			"introduction/installation",
+			"introduction/motivation",
+			"introduction/examples"
+		],
+		"Guides": [
+			"guides/intro",
+			"guides/field",
+			"guides/schema",
+			"guides/nested-schema",
+			"guides/related-field"
+		],
+		"API Reference": [
+			"api-reference/api",
+			"api-reference/field",
+			"api-reference/schema",
+			"api-reference/when",
+			{
+				"type": "subcategory",
+				"label": "Rules",
+				"ids": [
+					"api-reference/rules/generic",
+					"api-reference/rules/string",
+					"api-reference/rules/number",
+					"api-reference/rules/boolean",
+					"api-reference/rules/array",
+					"api-reference/rules/object",
+					"api-reference/rules/iterator"
+				]
+			}
+		]
+	}
+}
