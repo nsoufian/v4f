@@ -33,28 +33,40 @@ const User = Schema({
 
 > **NOTE :** Any rule that takes a value or more, similar as **equals** in this example can access to the value of another field by putting the name start by # in an array.
 
-### Change the value
+### Callback modifier
 
 Access to other fields value is impressive, but sometimes we want to make changes before passing the value to the rule that make the check, **v4f** let you give a **callback** as the second argument in the array passed to rule .
+
+Let us imagine that you have model Product to validate with the following constaint, the name of the product must start with the id of the product concatenated with "\_ " followed by the name of the product.
+
+Example if product id is 77 the name must be "77_productName".
 
 ```javascript
 import { Schema, Field } from "v4f";
 
-// Function to get the length of value
-const getLength = value => value.length;
-
-const User = Schema({
-	username: Field()
-		.string()
+const Product = Schema({
+	id: Field()
+		.number()
 		.required(),
-	password: Field()
+	name: Field()
 		.string()
-		// To Give the length of username to lengthEquals rule that accept only numbers
-		// pass callback getLength as second element of the array to modify the value.
-		.not.lengthEquals(["#username", getLength])
-		// Your can do this ["#username", value => value.length]
-		.required()
+		/*
+		 we use first rule to check if the field start with a given string.
+		 then we pass an array to first rule to reach other field value in this case id field.
+		 we pass callback as second item to the array to modify the id value.
+		 the type id field is number and first rule accept only string for that we use toString
+		 to value to cast it and we concat the _ to match the constaint.
+		*/
+		.first(["#id", value => value.toString() + "_"])
 });
+```
+
+```javascript
+const isValid = Product.validate({ id: 44, name: "44_iphone" }); // true
+```
+
+```javascript
+const isValid = Product.validate({ id: 44, name: "iphone" }); // false
 ```
 
 ## When Constaints
@@ -80,7 +92,12 @@ const adminServerAccess = Schema({
 		.boolean()
 		.falsy({
 			// Any rule can accept constraint option.
-			constraint: When("#user", Field().any.equals("root"))
+			constraint: When(
+				"#user",
+				Field()
+					.any()
+					.equals("root")
+			)
 		})
 });
 ```

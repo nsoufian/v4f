@@ -38,13 +38,13 @@ const User = Schema({
 		.string()
 		.alphaNum()
 		.required({
-			constraint: When("#email", Field().any.none())
+			constraint: When("#email", Field().none())
 		}),
 	email: Field()
 		.string()
 		.email()
 		.required({
-			constraint: When("#username", Field().any.none())
+			constraint: When("#username", Field().none())
 		}),
 	password: Field()
 		.string()
@@ -69,11 +69,13 @@ The above schema defines the following constraints:
 -   username :
     -   Must be string
     -   Must be alpha numeric
-    -   Required only when **email** field is not present
+    -   Required when **email** field is not present
+    -   Optional when **email** field is present
 -   email :
     -   Must be string
     -   Must be valid email
-    -   Required only when **username** field is not present
+    -   Required when **username** field is not present
+    -   Optional when **username** field is present
 -   password :
     -   Must be string
     -   At least 6 characters long but no more than 20

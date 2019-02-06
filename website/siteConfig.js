@@ -23,6 +23,11 @@ const siteConfig = {
   // Used for publishing and more
   projectName: "v4f",
   organizationName: "web-pyjs",
+  algolia: {
+    apiKey: "9c56ddc6a89b21d19e976e0ba978259f",
+    indexName: "v4f",
+    algoliaOptions: {} // Optional, if provided by Algolia
+  },
   // For top-level user or org sites, the organization is still the same.
   // e.g., for the https://JoelMarcey.github.io site, it would be set like...
   //   organizationName: 'JoelMarcey'
@@ -36,7 +41,8 @@ const siteConfig = {
       label: "Github",
       icon: "img/logo.png"
     },
-    { page: "help", label: "Help" }
+    { page: "help", label: "Help" },
+    { search: true }
   ],
 
   // If you have users set above, you add it here:

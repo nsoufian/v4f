@@ -44,6 +44,9 @@
       "guides/field": {
         "title": "Field"
       },
+      "guides/intro": {
+        "title": "Intro"
+      },
       "guides/nested-schema": {
         "title": "Nested schema"
       },

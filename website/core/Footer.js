@@ -35,13 +35,11 @@ class Footer extends React.Component {
           </a>
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl("doc1.html", this.props.language)}>
+            <a href={this.docUrl("introduction/get-started")}>
               Getting Started
             </a>
-            <a href={this.docUrl("doc2.html", this.props.language)}>Guides</a>
-            <a href={this.docUrl("doc3.html", this.props.language)}>
-              API Reference
-            </a>
+            <a href={this.docUrl("guides/intro")}>Guides</a>
+            <a href={this.docUrl("api-reference/api")}>API Reference</a>
           </div>
           <div>
             <h5>Community</h5>
@@ -52,7 +50,7 @@ class Footer extends React.Component {
             >
               Stack Overflow
             </a>
-            <a href="https://discordapp.com/">Project Chat</a>
+            <a href="https://discord.gg/TXqKrX">Project Chat</a>
             <a
               href="https://twitter.com/"
               target="_blank"
