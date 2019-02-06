@@ -232,11 +232,14 @@ describe("Validate Nested Schema and Related field, with Field a boolean should 
         c: Field()
           .boolean()
           .required(),
-        b: Schema({
-          x: Field()
-            .boolean()
-            .required()
-        })
+        b: Schema(
+          {
+            x: Field()
+              .boolean()
+              .required()
+          },
+          { async: true, verbose: true }
+        )
       },
       options
     ).validate(data);
