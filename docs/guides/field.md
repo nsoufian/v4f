@@ -52,7 +52,7 @@ Field().object(); // Chain your rules after this
 ```javascript
 import { Field } from "v4f"; // ES6
 
-Field().any; // Chain your rules after this
+Field().any(); // Chain your rules after this
 ```
 
 <!--END_DOCUSAURUS_CODE_TABS-->

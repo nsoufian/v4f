@@ -38,13 +38,23 @@ const User = Schema({
 		.string()
 		.alphaNum()
 		.required({
-			constraint: When("#email", Field().none())
+			constraint: When(
+				"#email",
+				Field()
+					.any()
+					.none()
+			)
 		}),
 	email: Field()
 		.string()
 		.email()
 		.required({
-			constraint: When("#username", Field().none())
+			constraint: When(
+				"#username",
+				Field()
+					.any()
+					.none()
+			)
 		}),
 	password: Field()
 		.string()
