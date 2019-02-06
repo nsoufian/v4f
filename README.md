@@ -32,13 +32,13 @@ v4f is a javascript library for data validation that encourages rapid developmen
 You can use  **V4f**  together with ([react.js](https://reactjs.org/),  [angular.js](https://angular.io/),  [vue.js](https://vuejs.org/),  [jquery](https://jquery.com/)) or with any web framework.
 
 
-###  New validation library again   !
+###  Why !
 
 why new validation library where they exist several good ones around, sure you are completely right. but the problem with those libraries is that almost all of the theme focus in data validation and they forget the key reason why we do validation for, is that we desire to guide our users by showing them what they missing or what they doing wrong with  some pieces of information, but sadly  you end up with generic messages errors or writing code on  the top of this libraries every time you use them.
 
 **V4F** comes to solve this problem by focusing on those two features validations and failures messages, **V4F** comes with easy and powerful syntax that feels more human that everyone can understand with more than 40+ built-in rules.
 
-##  Features 
+##  Out of the box
 
 **Schema** : v4f use the concept of the schema types to indicate your rules that will be checked later were we need it, this notion is powerful it lets you create complex rules ones and use it multiple types.
 
