@@ -4,3 +4,5 @@ src
 rollup.config.js
 yarn.lock
 coverage
+docs
+website
