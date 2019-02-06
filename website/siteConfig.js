@@ -14,7 +14,7 @@ const siteConfig = {
   title: "4 Forms", // Title for your website.
   tagline:
     "A declarative, efficient, and flexible JavaScript validation library for Humans",
-  url: "https://v4f.js.org", // Your website URL
+  url: "https://v4f.js.org/", // Your website URL
   baseUrl: "/", // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
@@ -24,7 +24,7 @@ const siteConfig = {
   projectName: "v4f",
   organizationName: "web-pyjs",
   algolia: {
-    apiKey: "9c56ddc6a89b21d19e976e0ba978259f",
+    apiKey: "fb633717b2157b08599bddabf1eefc29",
     indexName: "v4f",
     algoliaOptions: {} // Optional, if provided by Algolia
   },
@@ -93,6 +93,7 @@ const siteConfig = {
   cleanUrl: true,
   docsSideNavCollapsible: true,
   usePrism: ["javascript"],
+  repoUrl: "https://github.com/web-pyjs/v4f",
 
   // Open Graph and Twitter card images.
   ogImage: "img/mini-logo.png",
