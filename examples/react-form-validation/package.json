@@ -6,7 +6,8 @@
     "@material-ui/core": "^3.9.2",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
-    "typeface-roboto": "^0.0.54"
+    "typeface-roboto": "^0.0.54",
+    "v4f": "^0.1.0"
   },
   "devDependencies": {
     "react-scripts": "2.1.3"

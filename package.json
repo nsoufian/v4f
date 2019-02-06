@@ -1,6 +1,6 @@
 {
 	"name": "v4f",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "A declarative, efficient, and flexible JavaScript validation library for Humans .",
 	"maintainers": [
 		"soufiane nassih"
