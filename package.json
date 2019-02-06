@@ -1,16 +1,17 @@
 {
 	"name": "v4f",
-	"version": "0.0.9",
+	"version": "0.0.9-rc",
 	"description": "A declarative, efficient, and flexible JavaScript validation library for Humans .",
 	"maintainers": [
 		"soufiane nassih"
 	],
 	"main": "lib/cjs.js",
 	"module": "lib/es.js",
-	"typings": "lib/index.d.ts",
+	"typings": "index.d.ts",
 	"author": "Nassih soufiane",
 	"files": [
-		"lib"
+		"lib",
+		"index.d.ts"
 	],
 	"license": "MIT",
 	"dependencies": {},
@@ -37,7 +38,7 @@
 		"rollup-plugin-node-resolve": "^4.0.0"
 	},
 	"scripts": {
-		"build": "rollup -c && cp src/index.d.ts lib/",
+		"build": "rollup -c",
 		"watch": "rollup -c -w",
 		"test": "jest",
 		"tc": "jest --coverage && rm -rf ./coverage",

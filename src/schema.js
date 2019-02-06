@@ -20,7 +20,8 @@ const verboseValidation = (schema, values, bool, options) => {
       field: name,
       bool,
       values,
-      ...options
+      ...options,
+      async: false
     });
     if ((result !== true && result !== null) || bool) {
       errors = { ...errors, [name]: result };

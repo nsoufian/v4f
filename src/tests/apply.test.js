@@ -208,7 +208,12 @@ describe("Validate Required Rule with constraint, constraint b should equals abc
           .string()
           .equals("abc")
           .required({
-            constraint: When("#a", Field().any.truthy())
+            constraint: When(
+              "#a",
+              Field()
+                .any()
+                .truthy()
+            )
           })
       },
       { verbose: true }
