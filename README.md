@@ -52,29 +52,17 @@ why new validation library where they exist several good ones around, sure you a
 
 ###  Syntax overview
 ```javascript
-import {Schema, Field, When} from "v4f";
+import { Schema, Field } from "v4f";
 
 const User = Schema({
  username: Field()
   .string()
   .alphaNum()
-  .required({ 
-   constraint: When(
-    "#email", Field()
-    .any()
-    .none()
-   )
-  }),
+  .required(),
  email: Field()
   .string()
   .email()
-  .required({ 
-   constraint: When(
-    "#username", Field()
-    .any()
-    .none()
-   )
-  }),
+  .required(),
  password: Field()
   .string()
   .min(6)
@@ -97,13 +85,11 @@ The above schema defines the following constraints:
 -   username :
     -   Must be string
     -   Must be alpha numeric
-    -   Required when  **email**  field is not present
-    -   Optional when  **email**  field is present
+    -   Required
 -   email :
     -   Must be string
     -   Must be valid email
-    -   Required when  **username**  field is not present
-    -   Optional when  **username**  field is present
+    -   Required
 -   password :
     -   Must be string
     -   At least 6 characters long but no more than 20
@@ -175,7 +161,7 @@ In general, we follow the "fork-and-pull" Git workflow.
 ```
 MIT License
 
-Copyright (c) 2019 soufiane nassih
+Copyright (c) 2019 soufiane nassih soufiane.nass7@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
