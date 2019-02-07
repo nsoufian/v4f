@@ -94,6 +94,7 @@ const siteConfig = {
   docsSideNavCollapsible: true,
   usePrism: ["javascript"],
   repoUrl: "https://github.com/web-pyjs/v4f",
+  gaTrackingId: "UA-134052038-1",
 
   // Open Graph and Twitter card images.
   ogImage: "img/mini-logo.png",
