@@ -8,6 +8,7 @@ Generic are rules that you can apply besides any type
 ## Methods
 
 -   [required([options])](#required-options)
+-   [custom([options])](#custom-options)
 -   [none([options])](#none-options)
 -   [empty([options])](#empty-options)
 -   [equals(value, [options])](#equalsvalue-options)
@@ -52,6 +53,30 @@ field.validate(""); // true
 field.validate(undefined); // true
 field.validate(null); // true
 field.validate(9); // false, if the Field is optional and is not empty other rules are checked
+```
+
+### custom([options])
+
+Pass a custom validator function to check against the value of the field.
+
+Optionally, you can provide a options object that can hold **message** and **constraints**.
+
+> **NOTE :** : validator function must return **True** or **False**.
+
+Example :
+
+```javascript
+import { Field } from "v4f";
+
+const checkUppercase = value => value === value.toUpperCase();
+
+const field = Field()
+	.string()
+	.custom(checkUppercase)
+	.required();
+
+field.validate("STR"); // true
+field.validate("str"); // false
 ```
 
 ### none([options])
