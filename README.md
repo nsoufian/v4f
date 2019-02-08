@@ -27,7 +27,7 @@
 # Description :
 ### V4F
 
-v4f is a javascript library for data validation that encourages rapid development and clean, unlike other validation libraries v4f is designed from the ground up to be adaptable for any context, and it takes care of all your validation in different environments (client, server, native).
+A javascript library for validation that encourages rapid development and clean code, unlike other validation libraries v4f is designed from the ground up to be adaptable for any context, and it takes care of all your validation in different environments (client, server, native).
 
 You can use  **V4f**  together with ([react.js](https://reactjs.org/),  [angular.js](https://angular.io/),  [vue.js](https://vuejs.org/),  [jquery](https://jquery.com/)) or with any web framework.
 
