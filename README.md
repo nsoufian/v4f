@@ -8,9 +8,9 @@
   <a href="https://circleci.com/gh/web-pyjs/v4f/tree/master">
   <img alt="undefined" src="https://img.shields.io/circleci/project/github/web-pyjs/v4f/master.svg?style=flat">
   </a>
-   <a href="https://codecov.io/gh/reyx7/v4f">
-     <img style="center" src="https://codecov.io/gh/reyx7/v4f/branch/master/graph/badge.svg?token=tfmtpJgkJK">
-  </a>
+<a href="https://codecov.io/gh/web-pyjs/v4f">
+  <img src="https://codecov.io/gh/web-pyjs/v4f/branch/master/graph/badge.svg" />
+</a>
     <a href="https://badge.fury.io/js/v4f">
      <img style="center" src="https://badge.fury.io/js/v4f.svg">
   </a>
