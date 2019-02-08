@@ -92,3 +92,31 @@ describe("Validate not Required in Array Field", () => {
     });
   });
 });
+
+describe("Validate Custom rule with uppercase in String Field", () => {
+  const values = { valid: ["UP", "IP", "LOB"], invalid: ["lll", "il"] };
+
+  const customFun = v => {
+    if (v === v.toUpperCase()) {
+      return true;
+    }
+    return false;
+  };
+
+  const rule = v =>
+    Field()
+      .string()
+      .custom(customFun)
+      .validate(v);
+
+  values.valid.forEach(v => {
+    it(`Value : ${v} , should be true`, () => {
+      expect(rule(v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(v => {
+    it(`Value : ${v} , should be false`, () => {
+      expect(rule(v)).toBe(false);
+    });
+  });
+});

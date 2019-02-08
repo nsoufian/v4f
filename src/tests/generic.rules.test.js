@@ -5,6 +5,7 @@ import {
   empty,
   none,
   oneOf,
+  custom,
   exactOneOf
 } from "../rules/generic";
 
@@ -172,6 +173,24 @@ describe("Validate oneOf Rule with 4 as value", () => {
   values.invalid.forEach(v => {
     it(`Value : ${v} , should be false`, () => {
       expect(rule(v)).toBe(false);
+    });
+  });
+});
+
+describe("Validate Custom Rule", () => {
+  const values = {
+    valid: [{ fun: v => v === true, v: true }, { fun: v => v >= 5, v: 6 }],
+    invalid: [{ fun: v => v === true, v: false }, { fun: v => v >= 5, v: 3 }]
+  };
+  const rule = custom;
+  values.valid.forEach(({ v, fun }) => {
+    it(`Value : ${v} , should be true`, () => {
+      expect(rule(fun, v)).toBe(true);
+    });
+  });
+  values.invalid.forEach(({ v, fun }) => {
+    it(`Value : ${v} , should be false`, () => {
+      expect(rule(fun, v)).toBe(false);
     });
   });
 });

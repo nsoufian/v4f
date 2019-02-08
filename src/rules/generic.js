@@ -14,6 +14,8 @@ export const required = value =>
   isEmpty(value) !== true &&
   (value instanceof Array ? value.length !== 0 : true);
 
+export const custom = (fun, value) => fun(value);
+
 export const equals = (equalsValue, value) =>
   typeof value === "object" && typeof equalsValue === "object"
     ? isObjectsEquals(value, equalsValue)
