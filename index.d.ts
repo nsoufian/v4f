@@ -10,6 +10,7 @@ type Rules<T, R = T> = {
   not: Rules<T, R>;
   equals(value: any | RelatedField, options?: Options): Rules<T, R>;
   exact(value: any | RelatedField, options?: Options): Rules<T, R>;
+  custom(value: any | RelatedField, options?: Options): Rules<T, R>;
   none(options?: Options): Rules<T, R>;
   empty(options?: Options): Rules<T, R>;
   oneOf(
