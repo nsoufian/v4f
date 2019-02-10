@@ -11,6 +11,7 @@
 <a href="https://codecov.io/gh/web-pyjs/v4f">
   <img src="https://codecov.io/gh/web-pyjs/v4f/branch/master/graph/badge.svg" />
 </a>
+<a href="https://app.fossa.io/projects/git%2Bgithub.com%2Fweb-pyjs%2Fv4f?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.io/api/projects/git%2Bgithub.com%2Fweb-pyjs%2Fv4f.svg?type=shield"/></a>
     <a href="https://badge.fury.io/js/v4f">
      <img style="center" src="https://badge.fury.io/js/v4f.svg">
   </a>
@@ -24,6 +25,9 @@
 </p>
 
 [Documentation](https://v4f.js.org/docs/introduction/get-started) | [Exemples](https://v4f.js.org/docs/introduction/examples) | [API Reference](https://v4f.js.org/docs/api-reference/api) | [Need help ?](https://v4f.js.org/help)
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fweb-pyjs%2Fv4f.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fweb-pyjs%2Fv4f?ref=badge_large)
+
 ## Description
 
 A javascript library for validation that encourages rapid development and clean code, unlike other validation libraries v4f is designed from the ground up to be adaptable for any context, and it takes care of all your validation in different environments (client, server, native).
