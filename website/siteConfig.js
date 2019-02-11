@@ -24,7 +24,7 @@ const siteConfig = {
   projectName: "v4f",
   organizationName: "web-pyjs",
   algolia: {
-    apiKey: "fb633717b2157b08599bddabf1eefc29",
+    apiKey: "5ad65fc8babb78fffff1d2ca74114d3a",
     indexName: "v4f",
     algoliaOptions: {} // Optional, if provided by Algolia
   },
